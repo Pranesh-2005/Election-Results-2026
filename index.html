@@ -9,29 +9,12 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f0f2f8;
-  --surface:#ffffff;
-  --surface2:#f8f9fc;
-  --surface3:#eef0f7;
-  --border:#e2e5ef;
-  --border2:#c8ccdb;
-  --text:#12192e;
-  --muted:#6b7494;
-  --dim:#9ba3bc;
-  --faint:#d4d8e8;
-  --accent:#5c6bc0;
-  --accent-light:#eef0fd;
-  --header-bg:#e8eaf6;
-  --leading-blue:#2563eb;
-  --tvk:#c026d3;--dmk:#059669;--admk:#b45309;--bjp:#ea580c;
-  --pmk:#65a30d;--inc:#0284c7;--cpi:#dc2626;--cpim:#b91c1c;
-  --vck:#7c3aed;--ammk:#9333ea;--dmdk:#ca8a04;--bopf:#2563eb;
-  --agp:#7c2d12;--uppl:#db2777;--aiudf:#0369a1;--iuml:#16a34a;
-  --rsp:#6d28d9;--kec:#be185d;--ind:#64748b;
+  --bg:#f0f2f8;--surface:#ffffff;--surface2:#f8f9fc;--surface3:#eef0f7;
+  --border:#e2e5ef;--border2:#c8ccdb;--text:#12192e;--muted:#6b7494;
+  --dim:#9ba3bc;--faint:#d4d8e8;--accent:#5c6bc0;--accent-light:#eef0fd;
+  --header-bg:#e8eaf6;--leading-blue:#2563eb;
 }
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh;line-height:1.5}
-
-/* ── HEADER ── */
 .hdr{background:var(--surface);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding:0 24px;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.07)}
 .eci-badge{background:var(--accent);color:#fff;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:1.5px;flex-shrink:0}
 .hdr-title{font-size:14px;font-weight:600;color:var(--text);flex:1}
@@ -53,40 +36,25 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .ts{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim)}
 .rbtn{background:var(--surface);border:1px solid var(--border2);color:var(--muted);padding:5px 12px;border-radius:5px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:9px;transition:all .15s}
 .rbtn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
-
-/* ── MAIN ── */
 .main{padding:20px 24px;max-width:1400px;margin:0 auto}
-
-/* ── ALERT ── */
 #alert-bar{display:none;margin-bottom:16px;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#dc2626}
 #alert-bar.show{display:block}
-
-/* ── TOP INFO ROW ── */
 .top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
 .state-info{font-size:16px;font-weight:700;color:var(--text)}
 .state-info small{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);font-weight:400;margin-left:8px}
 .refresh-hint{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim)}
-.refresh-hint span{color:var(--muted)}
-
-/* ── STATE TABS ── */
 .state-tabs{display:flex;gap:2px;margin-bottom:20px;background:var(--surface3);border-radius:8px;padding:4px;border:1px solid var(--border)}
 .stab{flex:1;padding:7px 10px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:500;color:var(--muted);transition:all .15s;text-align:center;border:1px solid transparent}
 .stab:hover{color:var(--text);background:rgba(255,255,255,.6)}
 .stab.active{background:var(--surface);color:var(--accent);border-color:var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);font-weight:600}
 .stab-code{font-family:'JetBrains Mono',monospace;font-size:8px;display:block;margin-top:1px;opacity:.65}
-
-/* ── LAYOUT ── */
 .grid{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
 .grid-bottom{display:grid;grid-template-columns:340px 1fr;gap:16px;margin-top:16px;align-items:start}
 @media(max-width:900px){.grid,.grid-bottom{grid-template-columns:1fr}}
-
-/* ── PANEL ── */
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
 .ph{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--header-bg)}
 .ph-title{font-size:14px;font-weight:700;color:var(--text)}
 .ph-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
-
-
 .pwt-wrap{overflow-x:auto}
 table.pwt{width:100%;border-collapse:collapse;font-size:13px}
 table.pwt thead tr{border-bottom:2px solid var(--border2)}
@@ -96,27 +64,19 @@ table.pwt tbody tr{border-bottom:1px solid var(--border);transition:background .
 table.pwt tbody tr:hover{background:var(--accent-light)}
 table.pwt tbody td{padding:10px 16px;vertical-align:middle}
 table.pwt tbody td.num{text-align:right;font-family:'Inter',sans-serif;font-weight:400;font-size:13px;color:var(--text)}
-table.pwt tbody td.leading{text-align:right;font-weight:600;font-size:13px;color:var(--leading-blue);cursor:pointer}
-table.pwt tbody td.leading:hover{text-decoration:underline}
+table.pwt tbody td.leading{text-align:right;font-weight:600;font-size:13px;color:var(--leading-blue)}
 table.pwt tfoot tr{border-top:2px solid var(--border2);background:var(--surface2)}
 table.pwt tfoot td{padding:11px 16px;font-weight:700;font-size:13px;color:var(--text)}
 table.pwt tfoot td.num{text-align:right}
-
 .party-cell{display:flex;align-items:center;gap:10px}
 .party-bar{width:4px;height:32px;border-radius:2px;flex-shrink:0}
-.party-text{}
 .party-fullname{font-size:13px;font-weight:400;color:var(--text)}
-.party-shortname{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);display:none}
-
-/* ── SUMMARY CARDS ── */
 .scards{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
 .sc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;position:relative;overflow:hidden}
 .sc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cc,var(--faint))}
 .sc-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
 .sc-val{font-size:26px;font-weight:700;color:var(--cc,var(--text));line-height:1}
 .sc-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);margin-top:3px}
-
-/* ── SEAT GRID ── */
 .seat-grid-wrap{padding:12px 14px}
 .count-progress{padding:12px 14px 0}
 .cp-labels{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:4px}
@@ -130,8 +90,6 @@ table.pwt tfoot td.num{text-align:right}
 .sli{display:flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);padding:2px 5px;border-radius:3px;cursor:default}
 .sli:hover{background:var(--surface3)}
 .sld{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-
-/* ── DONUT ── */
 .donut-wrap{position:relative;height:190px}
 .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
 .dc-num{font-size:22px;font-weight:700;color:var(--text)}
@@ -139,8 +97,6 @@ table.pwt tfoot td.num{text-align:right}
 .donut-legend{display:flex;flex-wrap:wrap;gap:5px;padding:0 14px 12px}
 .dli{display:flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
 .dls{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-
-/* ── BARS ── */
 .bars-list{padding:12px 14px;display:flex;flex-direction:column;gap:7px}
 .bar-row{display:flex;align-items:center;gap:8px}
 .bar-name{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;width:48px;flex-shrink:0;text-align:right}
@@ -148,8 +104,6 @@ table.pwt tfoot td.num{text-align:right}
 .bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:5px;transition:width .55s cubic-bezier(.4,0,.2,1)}
 .bar-fill-lbl{font-size:8px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;font-family:'JetBrains Mono',monospace}
 .bar-count{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;width:24px;text-align:right;flex-shrink:0}
-
-/* ── CANDIDATE TABLE ── */
 .filters{display:flex;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);flex-wrap:wrap;background:var(--surface2)}
 .filters input,.filters select{background:var(--surface);border:1px solid var(--border2);color:var(--text);padding:5px 9px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;outline:none;transition:border-color .15s}
 .filters input{flex:1;min-width:130px}
@@ -166,13 +120,13 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
 .c-num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim)}
 .c-name{font-weight:500;font-size:13px;color:var(--text)}
 .c-name.pend{color:var(--dim)}
+.c-const{font-size:11px;color:var(--muted);font-weight:400}
 .cpill{display:inline-block;padding:2px 7px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700}
 .tfoot-info{padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);border-top:1px solid var(--border);background:var(--surface2)}
-
-/* ── TOOLTIP ── */
-#tt{position:fixed;background:var(--surface);border:1px solid var(--border2);border-radius:7px;padding:10px 14px;pointer-events:none;display:none;z-index:9000;max-width:230px;box-shadow:0 8px 24px rgba(0,0,0,.12)}
-.tt-num{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-bottom:4px}
-.tt-party{font-size:15px;font-weight:700}
+#tt{position:fixed;background:var(--surface);border:1px solid var(--border2);border-radius:7px;padding:10px 14px;pointer-events:none;display:none;z-index:9000;max-width:250px;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.tt-num{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-bottom:2px}
+.tt-const{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.tt-party{font-size:12px;font-weight:700}
 .tt-cand{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
 </style>
 </head>
@@ -193,24 +147,17 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
 
 <div class="main">
   <div id="alert-bar"></div>
-
-  <!-- State Tabs -->
   <div class="state-tabs">
     <div class="stab active" data-s="S22" onclick="switchState('S22')">Tamil Nadu<span class="stab-code">S22 · 234 seats</span></div>
     <div class="stab" data-s="S11" onclick="switchState('S11')">Kerala<span class="stab-code">S11 · 140 seats</span></div>
     <div class="stab" data-s="S03" onclick="switchState('S03')">Assam<span class="stab-code">S03 · 126 seats</span></div>
     <div class="stab" data-s="U07" onclick="switchState('U07')">Puducherry<span class="stab-code">U07 · 30 seats</span></div>
   </div>
-
   <div class="top-row">
     <div class="state-info" id="state-info">Tamil Nadu <small>Total AC: 234</small></div>
     <div class="refresh-hint" id="nxt-wrap">Next refresh in <span id="nxt-sec" style="color:var(--muted);margin-left:3px">30</span>s</div>
   </div>
-
-  <!-- MAIN GRID -->
   <div class="grid">
-
-    <!-- LEFT: Party Wise Results — ECI exact style -->
     <div class="panel">
       <div class="ph">
         <span class="ph-title">Party Wise Results</span>
@@ -218,31 +165,13 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
       </div>
       <div class="pwt-wrap">
         <table class="pwt">
-          <thead>
-            <tr>
-              <th>Party</th>
-              <th class="num">Won</th>
-              <th class="num">Leading</th>
-              <th class="num">Total</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Party</th><th class="num">Won</th><th class="num">Leading</th><th class="num">Total</th></tr></thead>
           <tbody id="pwt-body"></tbody>
-          <tfoot>
-            <tr>
-              <td><strong>Total</strong></td>
-              <td class="num" id="ft-won">0</td>
-              <td class="num" id="ft-lead">—</td>
-              <td class="num" id="ft-total">—</td>
-            </tr>
-          </tfoot>
+          <tfoot><tr><td><strong>Total</strong></td><td class="num" id="ft-won">0</td><td class="num" id="ft-lead">—</td><td class="num" id="ft-total">—</td></tr></tfoot>
         </table>
       </div>
     </div>
-
-    <!-- RIGHT column -->
     <div style="display:flex;flex-direction:column;gap:14px">
-
-      <!-- Summary cards -->
       <div class="scards">
         <div class="sc" style="--cc:#16a34a">
           <div class="sc-lbl">Results In</div>
@@ -255,42 +184,30 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
           <div class="sc-sub">awaiting</div>
         </div>
       </div>
-
-      <!-- Seat grid -->
       <div class="panel">
         <div class="ph">
           <span class="ph-title">Constituency View</span>
           <span class="ph-sub" id="seat-sub">—</span>
         </div>
         <div class="count-progress">
-          <div class="cp-labels">
-            <span id="cp-lbl">Results coming in</span>
-            <span id="cp-pct">0%</span>
-          </div>
+          <div class="cp-labels"><span id="cp-lbl">Results coming in</span><span id="cp-pct">0%</span></div>
           <div class="cp-track"><div class="cp-fill" id="cp-fill" style="width:0%"></div></div>
         </div>
         <div class="seat-grid-wrap"><div class="seat-grid" id="sgrid"></div></div>
         <div class="seat-legend" id="sleg"></div>
       </div>
-
-      <!-- Donut -->
       <div class="panel">
         <div class="ph"><span class="ph-title">Seat Share</span></div>
         <div style="padding:12px 14px 0">
           <div class="donut-wrap">
-            <canvas id="dc" role="img" aria-label="Donut chart seat share by party">Loading...</canvas>
-            <div class="donut-center">
-              <div class="dc-num" id="dc-num">—</div>
-              <div class="dc-lbl">RESULTS IN</div>
-            </div>
+            <canvas id="dc" role="img" aria-label="Donut chart seat share by party"></canvas>
+            <div class="donut-center"><div class="dc-num" id="dc-num">—</div><div class="dc-lbl">RESULTS IN</div></div>
           </div>
         </div>
         <div class="donut-legend" id="dleg"></div>
       </div>
     </div>
   </div>
-
-  <!-- BOTTOM GRID -->
   <div class="grid-bottom">
     <div class="panel">
       <div class="ph"><span class="ph-title">Party Tally</span></div>
@@ -302,7 +219,7 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
         <span class="ph-sub" id="cand-lbl">—</span>
       </div>
       <div class="filters">
-        <input type="text" id="si" placeholder="Search name / party / #…">
+        <input type="text" id="si" placeholder="Search constituency / candidate / party…">
         <select id="pf"><option value="">All parties</option></select>
         <select id="sf">
           <option value="">All</option>
@@ -312,7 +229,7 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
       </div>
       <div class="tscroll">
         <table class="ctbl">
-          <thead><tr><th>#</th><th>Candidate</th><th>Party</th><th>Status</th></tr></thead>
+          <thead><tr><th>#</th><th>Constituency</th><th>Candidate</th><th>Party</th><th>Status</th></tr></thead>
           <tbody id="ctbody"></tbody>
         </table>
       </div>
@@ -323,50 +240,78 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
 
 <div id="tt">
   <div class="tt-num" id="tt-num"></div>
+  <div class="tt-const" id="tt-const"></div>
   <div class="tt-party" id="tt-party"></div>
   <div class="tt-cand" id="tt-cand"></div>
 </div>
 
 <script>
+
+// Tamil Nadu — all 234 ACs
+const TN_CONST = {
+1:'Gummidipoondi',2:'Ponneri',3:'Redhills',4:'Poonamallee',5:'Ambattur',6:'Maduravoyal',7:'Tiruvottiyur',8:'Dr Radhakrishnan Nagar',9:'Kolathur',10:'Villivakkam',11:'Thiru-Vi-Ka Nagar',12:'Egmore',13:'Royapuram',14:'Harbour',15:'Chepauk-Thiruvallikeni',16:'Thousand Lights',17:'Anna Nagar',18:'Virugambakkam',19:'Saidapet',20:'Thiyagarayanagar',21:'Mylapore',22:'Velachery',23:'Sholinganallur',24:'Perungudi',25:'Thuraipakkam',26:'Tambaram',27:'Pallavaram',28:'Anakaputhur',29:'Chrompet',30:'St Thomas Mount',31:'Chengalpattu',32:'Thiruporur',33:'Cheyyur',34:'Madurantakam',35:'Uthiramerur',36:'Kancheepuram',37:'Arakkonam',38:'Sholinghur',39:'Katpadi',40:'Ranipet',41:'Arcot',42:'Vellore',43:'Anaikattu',44:'Kilvaithinankuppam',45:'Gudiyatham',46:'Vaniyambadi',47:'Ambur',48:'Jolarpet',49:'Tirupattur',50:'Natrampalli',51:'Krishnagiri',52:'Veppanahalli',53:'Hosur',54:'Thalli',55:'Palacodu',56:'Pennagaram',57:'Dharmapuri',58:'Pappireddippatti',59:'Harur',60:'Bargur',61:'Omalur',62:'Mettur',63:'Edappadi',64:'Salem',65:'Veerapandi',66:'Attur',67:'Yercaud',68:'Gangavalli',69:'Rasipuram',70:'Sendamangalam',71:'Namakkal',72:'Paramathi-Velur',73:'Tiruchengode',74:'Erode',75:'Modakkurichi',76:'Bhavani',77:'Anthiyur',78:'Gobichettipalayam',79:'Bhavanisagar',80:'Sathyamangalam',81:'Palladam',82:'Avinashi',83:'Tiruppur',84:'Udumalpet',85:'Palani',86:'Pollachi',87:'Kinathukadavu',88:'Coimbatore North',89:'Coimbatore South',90:'Singanallur',91:'Karamadai',92:'Mettupalayam',93:'Gudalur',94:'Nilgiris',95:'Gudalur TK',96:'Coonoor',97:'Mettuppalayam Nilgiris',98:'Dharapuram',99:'Kangayam',100:'Perundurai',101:'Thirumangalam',102:'Usilampatti',103:'Andipatti',104:'Sholavandan',105:'Madurai East',106:'Sivakasi',107:'Virudhunagar',108:'Aruppukkottai',109:'Srivilliputhur',110:'Sattur',111:'Watrap',112:'Rajapalayam',113:'Thenkasi',114:'Alangulam',115:'Tenkasi',116:'Vasudevanallur',117:'Kadayanallur',118:'Sankarankovil',119:'Sivakasi South',120:'Tiruchuli',121:'Paramakudi',122:'Sathankulam',123:'Kovilpatti',124:'Ottapidaram',125:'Vilathikulam',126:'Thoothukudi',127:'Tiruchendur',128:'Srivaikuntam',129:'Radhapuram',130:'Valliyur',131:'Nanguneri',132:'Cheranmahadevi',133:'Palayamkottai',134:'Tirunelveli',135:'Ambasamudram',136:'Alangulam S',137:'Kallidaikurichi',138:'Karunkulam',139:'Sankarankovil S',140:'Vikramasingapuram',141:'Keelapavoor',142:'Tenkasi S',143:'Vickramasingapuram',144:'Shencottah',145:'Kuruvikulam',146:'Punalur',147:'Karur',148:'Aravakurichi',149:'Kulithalai',150:'Manapparai',151:'Srirangam',152:'Tiruchirappalli West',153:'Tiruchirappalli East',154:'Thiruverumbur',155:'Lalgudi',156:'Manachanallur',157:'Musiri',158:'Thuraiyur',159:'Perambalur',160:'Kunnam',161:'Ariyalur',162:'Jayankondam',163:'Vriddhachalam',164:'Virudhachalam',165:'Neyveli',166:'Panruti',167:'Cuddalore',168:'Kurinjipadi',169:'Bhuvanagiri',170:'Chidambaram',171:'Kattumannarkoil',172:'Sirkazhi',173:'Mayiladuthurai',174:'Poompuhar',175:'Nagapattinam',176:'Kilvelur',177:'Vedaranyam',178:'Thiruthuraipoondi',179:'Papanasam',180:'Kumbakonam',181:'Thanjavur',182:'Orathanadu',183:'Pattukkottai',184:'Peravurani',185:'Aranthangi',186:'Manamelkudi',187:'Papanasam T',188:'Thiruvaiyaru',189:'Thiruvidaimaruthur',190:'Mannargudi',191:'Needamangalam',192:'Thiruturaipondi',193:'Pattukottai T',194:'Natham',195:'Dindigul',196:'Vedasandur',197:'Aravakurichi D',198:'Kulithalai D',199:'Pennalur',200:'Attur S',201:'Salem West',202:'Pethanaickenpalayam',203:'Rasipuram S',204:'Tiruchengode S',205:'Erode S',206:'Bhavani S',207:'Anthiyur S',208:'Gobichettipalayam S',209:'Bhavanisagar S',210:'Perundurai S',211:'Dharapuram S',212:'Kangayam S',213:'Palladam S',214:'Avinashi S',215:'Tiruppur S',216:'Pollachi S',217:'Coimbatore N',218:'Coimbatore S',219:'Singanallur S',220:'Karamadai S',221:'Mettupalayam S',222:'Udagamandalam',223:'Gudalur S',224:'Munsif Pattinam',225:'Pattiveeranpatti',226:'Melur',227:'Madurai North',228:'Madurai South',229:'Madurai Central',230:'Madurai West',231:'Tirumangalam T',232:'Paramakudi T',233:'Keelakarai',234:'Ramanathapuram',
+};
+
+// Kerala — all 140 ACs
+const KL_CONST = {
+1:'Kasaragod',2:'Uduma',3:'Manjeshwaram',4:'Kanhangad',5:'Trikaripur',6:'Payyanur',7:'Kalliasseri',8:'Thalassery',9:'Kuthuparamba',10:'Mattannur',11:'Peravoor',12:'Iritty',13:'Koothuparamba',14:'Mananthavady',15:'Sulthan Bathery',16:'Kalpetta',17:'Thiruvambady',18:'Eranad',19:'Nilambur',20:'Wandoor',21:'Tirur',22:'Tanur',23:'Tirurangadi',24:'Mankada',25:'Malappuram',26:'Perinthalmanna',27:'Areekode',28:'Kondotty',29:'Manjeri',30:'Kottakkal',31:'Thavanur',32:'Ponnani',33:'Thrithala',34:'Pattambi',35:'Shornur',36:'Ottapalam',37:'Kongad',38:'Mannarkkad',39:'Malampuzha',40:'Palakkad',41:'Tarur',42:'Chittur',43:'Nenmara',44:'Alathur',45:'Chelakkara',46:'Kunnamkulam',47:'Guruvayur',48:'Manalur',49:'Wadakkanchery',50:'Ollur',51:'Thrissur',52:'Nattika',53:'Irinjalakuda',54:'Puthukkad',55:'Chalakudy',56:'Kodungallur',57:'Perumbavoor',58:'Angamaly',59:'Aluva',60:'Kalamassery',61:'Paravur',62:'Vypin',63:'Kozhikode North',64:'Kozhikode South',65:'Beypore',66:'Elathur',67:'Kozhikode',68:'Kunnamangalam',69:'Balussery',70:'Thiruvambadi',71:'Koduvally',72:'Koyilandy',73:'Perambra',74:'Vatakara',75:'Nadapuram',76:'Kuttiyadi',77:'Feroke',78:'Ernakulam',79:'Tripunithura',80:'Thrippunithura',81:'Thrikkakara',82:'Kunnathunadu',83:'Piravom',84:'Muvattupuzha',85:'Kothamangalam',86:'Devikulam',87:'Udumbanchola',88:'Thodupuzha',89:'Idukki',90:'Peerumade',91:'Muvattupuzha T',92:'Aroor',93:'Cherthala',94:'Alappuzha',95:'Ambalappuzha',96:'Haripad',97:'Kayamkulam',98:'Mavelikkara',99:'Chengannur',100:'Thiruvalla',101:'Ranni',102:'Aranmula',103:'Konni',104:'Adoor',105:'Karunagappally',106:'Kunnathur',107:'Kottarakkara',108:'Pathanapuram',109:'Punalur',110:'Chadayamangalam',111:'Kollam',112:'Eravipuram',113:'Kunnathur T',114:'Chavara',115:'Kochi',116:'Thrippunithura T',117:'Vadavukode-Puthenkuriz',118:'Kunnathunad',119:'Kothamangalam T',120:'Thodupuzha T',121:'Nedumangad',122:'Vattiyoorkavu',123:'Thiruvananthapuram',124:'Nemom',125:'Aruvikkara',126:'Kattakkada',127:'Chirayinkeezhu',128:'Attingal',129:'Varkala',130:'Parassala',131:'Kovalam',132:'Neyyattinkara',133:'Kazhakkoottam',134:'Kizhuvilam',135:'Palode',136:'Kattakkada T',137:'Ettumanur',138:'Kanjirappally',139:'Pampady',140:'Vaikom',
+};
+
+// Assam — all 126 ACs
+const AS_CONST = {
+1:'Mankachar',2:'Salmara',3:'Bilasipara West',4:'Bilasipara East',5:'Golakganj',6:'Gauripur',7:'Dhubri',8:'Gauripur T',9:'Jaleswar',10:'Baghbar',11:'Sarukhetri',12:'Chenga',13:'Boko',14:'Chaygaon',15:'Palasbari',16:'Jalukbari',17:'Dispur',18:'Gauhati East',19:'Gauhati West',20:'Jhalukbari',21:'Hajo',22:'Kamalpur',23:'Rangia',24:'Chamaria',25:'Barpeta',26:'Jania',27:'Baghbar T',28:'Sorbhog',29:'Bongaigaon',30:'Bijni',31:'Abhayapuri North',32:'Abhayapuri South',33:'Bhabanipur',34:'Patacharkuchi',35:'Barpeta Road',36:'Chenga T',37:'Tihu',38:'Nalbari',39:'Bardho',40:'Dharmapur',41:'Pakkabar',42:'Chaygaon T',43:'Hathsingimari',44:'South Salmara',45:'Rupsi',46:'Kalgachia',47:'Duni',48:'Tamulpur',49:'Baganpara',50:'Sipajhar',51:'Mangaldoi',52:'Dalgaon',53:'Udalguri',54:'Mazbat',55:'Kalaigaon',56:'Rowta',57:'Bihali',58:'Borchala',59:'Dhemaji',60:'Jonai',61:'Majabat',62:'Gogamukh',63:'Dhakuakhana',64:'Lakhimpur',65:'Biswanath',66:'Behali',67:'Tezpur',68:'Sootea',69:'Bihpuria',70:'Naoboicha',71:'Borgolai',72:'Chabua',73:'Moran',74:'Dibrugarh',75:'Lahowal',76:'Duliajan',77:'Tingkhong',78:'Naharkatia',79:'Digboi',80:'Tinsukia',81:'Doomdooma',82:'Margherita',83:'Sadiya',84:'Sibsagar',85:'Sonari',86:'Thowra',87:'Amguri',88:'Nazira',89:'Mahmora',90:'Golaghat',91:'Sarupathar',92:'Khumtai',93:'Dhansiri',94:'Furkating',95:'Jorhat',96:'Titabar',97:'Majuli',98:'Mariani',99:'Teok',100:'Dergaon',101:'Golaghat T',102:'Bokakhat',103:'Kaliabor',104:'Nagaon',105:'Barhampur',106:'Lumding',107:'Hojai',108:'Doboka',109:'Kampur',110:'Raha',111:'Rupahihat',112:'Nowgong',113:'Samaguri',114:'Batadrawa',115:'Dhing',116:'Jagiroad',117:'Morigaon',118:'Laharighat',119:'Dispur T',120:'Boko T',121:'Sualkuchi',122:'Goroimari',123:'Goreswar',124:'Tamulpur T',125:'Bhawanipur',126:'Sorbhog T',
+};
+
+// Puducherry — all 30 ACs
+const PY_CONST = {
+1:'Ariyankuppam',2:'Bahour',3:'Kamaraj Nagar',4:'Lawspet',5:'Mannadipet',6:'Mahe',7:'Muthialpet',8:'Nellithope',9:'Oulgaret',10:'Ozhukarai',11:'Rajbhavan',12:'Thattanchavady',13:'Villianur',14:'Vaanur',15:'Mudaliarpet',16:'Pondicherry',17:'Indira Nagar',18:'Embalam',19:'Thirubhuvanai',20:'Yanam',21:'Uppalam',22:'Kadirgamam',23:'Sivakatchi',24:'Manavely',25:'Karikalampakkam',26:'Thirukanur',27:'Oussudu',28:'Reddiarpalayam',29:'Korkadu',30:'Nedungadu',
+};
+
+const CONST_MAP = {S22: TN_CONST, S11: KL_CONST, S03: AS_CONST, U07: PY_CONST};
+
+function getConstName(stateCode, num) {
+  const m = CONST_MAP[stateCode];
+  if (!m) return `AC ${num}`;
+  return m[parseInt(num)] || `AC ${num}`;
+}
+
+
 const PARTY_META = {
-  TVK:       {c:'#c026d3', full:'Tamilaga Vettri Kazhagam'},
-  DMK:       {c:'#059669', full:'Dravida Munnetra Kazhagam'},
-  ADMK:      {c:'#b45309', full:'All India Anna Dravida Munnetra Kazhagam'},
-  BJP:       {c:'#ea580c', full:'Bharatiya Janata Party'},
-  PMK:       {c:'#65a30d', full:'Pattali Makkal Katchi'},
-  INC:       {c:'#0284c7', full:'Indian National Congress'},
-  'CPI(M)':  {c:'#b91c1c', full:'Communist Party of India (Marxist)'},
-  CPI:       {c:'#dc2626', full:'Communist Party of India'},
-  VCK:       {c:'#7c3aed', full:'Viduthalai Chiruthaigal Katchi'},
-  AMMKMNKZ:  {c:'#9333ea', full:'Amma Makkal Munnettra Kazagam'},
-  DMDK:      {c:'#ca8a04', full:'Desiya Murpokku Dravida Kazhagam'},
-  BOPF:      {c:'#2563eb', full:'Bodoland Peoples Front'},
-  AGP:       {c:'#92400e', full:'Asom Gana Parishad'},
-  UPPL:      {c:'#db2777', full:'United People\'s Party Liberal'},
-  AIUDF:     {c:'#0369a1', full:'All India United Democratic Front'},
-  IUML:      {c:'#16a34a', full:'Indian Union Muslim League'},
-  RSP:       {c:'#6d28d9', full:'Revolutionary Socialist Party'},
-  KEC:       {c:'#be185d', full:'Kerala Congress'},
-  'KEC(J)':  {c:'#9d174d', full:'Kerala Congress (Jacob)'},
-  'KEC(M)':  {c:'#a21caf', full:'Kerala Congress (M)'},
-  CMPKSC:    {c:'#7e22ce', full:'Communist Marxist Party of Kerala (SC)'},
-  RJD:       {c:'#047857', full:'Rashtriya Janata Dal'},
-  RJRD:      {c:'#065f46', full:'RJRD'},
-  RMPOI:     {c:'#8b86d6', full:'RMPOI'},
-  AINRC:     {c:'#0f766e', full:'All India N.R. Congress'},
-  IND:       {c:'#64748b', full:'Independent'},
-  NA:        {c:'#d1d5db', full:'Pending'},
+  TVK:{c:'#c026d3',full:'Tamilaga Vettri Kazhagam'},
+  DMK:{c:'#059669',full:'Dravida Munnetra Kazhagam'},
+  ADMK:{c:'#b45309',full:'All India Anna Dravida Munnetra Kazhagam'},
+  BJP:{c:'#ea580c',full:'Bharatiya Janata Party'},
+  PMK:{c:'#65a30d',full:'Pattali Makkal Katchi'},
+  INC:{c:'#0284c7',full:'Indian National Congress'},
+  'CPI(M)':{c:'#b91c1c',full:'Communist Party of India (Marxist)'},
+  CPI:{c:'#dc2626',full:'Communist Party of India'},
+  VCK:{c:'#7c3aed',full:'Viduthalai Chiruthaigal Katchi'},
+  AMMKMNKZ:{c:'#9333ea',full:'Amma Makkal Munnettra Kazagam'},
+  DMDK:{c:'#ca8a04',full:'Desiya Murpokku Dravida Kazhagam'},
+  BOPF:{c:'#2563eb',full:'Bodoland Peoples Front'},
+  AGP:{c:'#92400e',full:'Asom Gana Parishad'},
+  UPPL:{c:'#db2777',full:'United People\'s Party Liberal'},
+  AIUDF:{c:'#0369a1',full:'All India United Democratic Front'},
+  IUML:{c:'#16a34a',full:'Indian Union Muslim League'},
+  RSP:{c:'#6d28d9',full:'Revolutionary Socialist Party'},
+  KEC:{c:'#be185d',full:'Kerala Congress'},
+  'KEC(J)':{c:'#9d174d',full:'Kerala Congress (Jacob)'},
+  'KEC(M)':{c:'#a21caf',full:'Kerala Congress (M)'},
+  CMPKSC:{c:'#7e22ce',full:'Communist Marxist Party of Kerala (SC)'},
+  RJD:{c:'#047857',full:'Rashtriya Janata Dal'},
+  AINRC:{c:'#0f766e',full:'All India N.R. Congress'},
+  IND:{c:'#64748b',full:'Independent'},
+  NA:{c:'#d1d5db',full:'Pending'},
 };
 const pc  = p => (PARTY_META[p]||{c:'#94a3b8'}).c;
 const pfl = p => (PARTY_META[p]||{full:p}).full;
 
 const STATES = {
-  S22:{name:'Tamil Nadu',  seats:234, total_label:'Total AC: 234'},
-  S11:{name:'Kerala',      seats:140, total_label:'Total AC: 140'},
-  S03:{name:'Assam',       seats:126, total_label:'Total AC: 126'},
-  U07:{name:'Puducherry',  seats:30,  total_label:'Total AC: 30'},
+  S22:{name:'Tamil Nadu', seats:234, total_label:'Total AC: 234'},
+  S11:{name:'Kerala',     seats:140, total_label:'Total AC: 140'},
+  S03:{name:'Assam',      seats:126, total_label:'Total AC: 126'},
+  U07:{name:'Puducherry', seats:30,  total_label:'Total AC: 30'},
 };
-
 
 const ECI_BASE = 'https://results.eci.gov.in/ResultAcGenMay2026/election-json-';
 const INTERVAL  = 30;
@@ -391,17 +336,17 @@ async function tryFetch(url) {
   for (let i = 0; i < PROXIES.length; i++) {
     const idx = (proxyIdx + i) % PROXIES.length;
     try {
-      const res = await fetch(PROXIES[idx](url), {
+      const res = await fetch(PROXIES[idx](url),{
         cache:'no-store',
         headers:{'Accept':'application/json,*/*','Accept-Language':'en-IN,en;q=0.9'},
-        signal: AbortSignal.timeout(12000),
+        signal:AbortSignal.timeout(12000),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       if (!json || typeof json !== 'object') throw new Error('Invalid JSON');
       proxyIdx = idx;
       return json;
-    } catch(e) { lastErr = e; }
+    } catch(e){lastErr=e;}
   }
   throw lastErr;
 }
@@ -409,254 +354,199 @@ async function tryFetch(url) {
 async function poll() {
   setStatus('connecting');
   let fetched = false;
-
-  // Try combined endpoint first
   try {
     const json = await tryFetch(`${ECI_BASE}live.json`);
-    Object.keys(STATES).forEach(k => { if (json[k]) allData[k] = json[k]; });
+    Object.keys(STATES).forEach(k=>{if(json[k])allData[k]=json[k];});
     fetched = true;
-  } catch(e) {}
-
-  // Try state-specific endpoint
+  } catch(e){}
   if (!allData[activeState]) {
     try {
       const json = await tryFetch(`${ECI_BASE}${activeState}-live.json`);
-      if (json[activeState]) allData[activeState] = json[activeState];
-      else allData[activeState] = json;
+      allData[activeState] = json[activeState] ? json[activeState] : json;
       fetched = true;
-    } catch(e) { fetched = false; }
+    } catch(e){fetched=false;}
   }
-
   if (fetched || allData[activeState]) {
-    retries = 0;
-    clearAlert();
+    retries=0; clearAlert();
     renderState(activeState);
     setStatus('live');
     g('ts').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   } else {
     retries++;
     setStatus('error');
-    showAlert('Could not fetch ECI data' + (retries >= 2 ? ' — ECI may require Indian IP.' : ' — retrying…'));
+    showAlert('Could not fetch ECI data' + (retries>=2?' — ECI may require Indian IP.':' — retrying…'));
   }
   schedule();
 }
 
 function schedule() {
   if (pollTimer) clearTimeout(pollTimer);
-  const delay = Math.min(INTERVAL * Math.max(retries, 1), 120) * 1000;
+  const delay = Math.min(INTERVAL * Math.max(retries,1), 120)*1000;
   pollTimer = setTimeout(poll, delay);
-  startCountdown(Math.round(delay / 1000));
+  startCountdown(Math.round(delay/1000));
 }
 
 function startCountdown(secs) {
-  let c = secs;
-  const wrap = g('nxt-wrap');
-  wrap.innerHTML = `Next refresh in <span id="nxt-sec" style="color:var(--muted);margin-left:3px">${c}</span>s`;
-  if (cntTimer) clearInterval(cntTimer);
-  cntTimer = setInterval(() => {
+  let c=secs;
+  const wrap=g('nxt-wrap');
+  wrap.innerHTML=`Next refresh in <span id="nxt-sec" style="color:var(--muted);margin-left:3px">${c}</span>s`;
+  if(cntTimer)clearInterval(cntTimer);
+  cntTimer=setInterval(()=>{
     c--;
-    const e = document.getElementById('nxt-sec');
-    if (!e || c <= 0) { clearInterval(cntTimer); if(e) e.parentNode.textContent = 'Fetching…'; return; }
-    e.textContent = c;
-  }, 1000);
+    const e=document.getElementById('nxt-sec');
+    if(!e||c<=0){clearInterval(cntTimer);if(e)e.parentNode.textContent='Fetching…';return;}
+    e.textContent=c;
+  },1000);
 }
 
-function fetchNow() {
-  if (pollTimer) clearTimeout(pollTimer);
-  if (cntTimer)  clearInterval(cntTimer);
-  retries = 0; poll();
+function fetchNow(){
+  if(pollTimer)clearTimeout(pollTimer);
+  if(cntTimer)clearInterval(cntTimer);
+  retries=0;poll();
 }
 
-function switchState(code) {
-  activeState = code;
-  document.querySelectorAll('.stab').forEach(t => t.classList.toggle('active', t.dataset.s === code));
-  // Reset party filter
-  const psel = g('pf');
-  while (psel.options.length > 1) psel.remove(1);
-  if (allData[code]) renderState(code);
-  else { fetchNow(); }
+function switchState(code){
+  activeState=code;
+  document.querySelectorAll('.stab').forEach(t=>t.classList.toggle('active',t.dataset.s===code));
+  const psel=g('pf');
+  while(psel.options.length>1)psel.remove(1);
+  if(allData[code])renderState(code);
+  else fetchNow();
 }
 
 
-function renderState(code) {
-  const raw = allData[code];
-  if (!raw) return;
+function renderState(code){
+  const raw=allData[code];
+  if(!raw)return;
+  const sd=raw[code]?raw[code]:raw;
+  const chartData=sd.chartData||[];
+  const tableData=sd.tableData||[];
 
-  // Support both {S22:{chartData,tableData}} and {chartData,tableData} shapes
-  const sd = raw[code] ? raw[code] : raw;
-  const chartData = sd.chartData || [];
-  const tableData = sd.tableData || [];
+  const cmap={};
+  chartData.forEach(([party,,num,name])=>{cmap[num]={party,name};});
 
-  // Build candidate map
-  const cmap = {};
-  chartData.forEach(([party,,num,name]) => { cmap[num] = {party, name}; });
-
-  // Count from tableData
-  // ECI tableData item: [party, stateCode, constituencyNum]
-  // If a 4th element exists it may indicate won status — handle both
-  const wonCounts  = {};
-  const leadCounts = {};
-
-  tableData.forEach(row => {
-    const party  = row[0];
-    const status = row[3] || null; // future-proof: "WON" flag if ECI adds it
-    if (party === 'NA') return;
-    if (status === 'WON' || status === 'W') {
-      wonCounts[party]  = (wonCounts[party]  || 0) + 1;
-    } else {
-      leadCounts[party] = (leadCounts[party] || 0) + 1;
-    }
+  const wonCounts={}, leadCounts={};
+  tableData.forEach(row=>{
+    const party=row[0],status=row[3]||null;
+    if(party==='NA')return;
+    if(status==='WON'||status==='W')wonCounts[party]=(wonCounts[party]||0)+1;
+    else leadCounts[party]=(leadCounts[party]||0)+1;
   });
 
-  // Total per party = won + leading
-  const allParties = new Set([...Object.keys(wonCounts), ...Object.keys(leadCounts)]);
-  const totals = {};
-  allParties.forEach(p => { totals[p] = (wonCounts[p]||0) + (leadCounts[p]||0); });
+  const allParties=new Set([...Object.keys(wonCounts),...Object.keys(leadCounts)]);
+  const totals={};
+  allParties.forEach(p=>{totals[p]=(wonCounts[p]||0)+(leadCounts[p]||0);});
 
-  const pending   = (tableData.filter(r => r[0] === 'NA')).length;
-  const total     = tableData.length;
-  const resultsIn = total - pending;
-  const totalSeats = STATES[code]?.seats || total;
-  const majority   = Math.floor(totalSeats / 2) + 1;
+  const pending=tableData.filter(r=>r[0]==='NA').length;
+  const total=tableData.length;
+  const resultsIn=total-pending;
+  const sorted=Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+  const totalWon=Object.values(wonCounts).reduce((s,v)=>s+v,0);
+  const totalLead=Object.values(leadCounts).reduce((s,v)=>s+v,0);
 
-  // Sort by total desc
-  const sorted = Object.entries(totals).sort((a,b) => b[1]-a[1]);
-  const totalWon  = Object.values(wonCounts).reduce((s,v)=>s+v,0);
-  const totalLead = Object.values(leadCounts).reduce((s,v)=>s+v,0);
-
-
-  g('state-info').innerHTML = `${STATES[code]?.name} <small>${STATES[code]?.total_label}</small>`;
-
-  renderPWT(sorted, wonCounts, leadCounts, totalWon, totalLead, resultsIn, total);
-  renderSummary(resultsIn, pending, total, sorted);
-  renderSeatGrid(tableData, cmap, resultsIn, total);
+  g('state-info').innerHTML=`${STATES[code]?.name} <small>${STATES[code]?.total_label}</small>`;
+  renderPWT(sorted,wonCounts,leadCounts,totalWon,totalLead,resultsIn,total);
+  renderSummary(resultsIn,pending,total);
+  renderSeatGrid(tableData,cmap,resultsIn,total,code);
   renderBars(sorted);
-  renderDonut(sorted, resultsIn);
-  renderCandTable_data(tableData, cmap);
+  renderDonut(sorted,resultsIn);
+  renderCandTable_data(tableData,cmap,code);
 }
 
-function renderPWT(sorted, wonCounts, leadCounts, totalWon, totalLead, resultsIn, total) {
-  const tbody = g('pwt-body');
-  tbody.innerHTML = sorted.map(([p, tot]) => {
-    const col  = pc(p);
-    const won  = wonCounts[p]  || 0;
-    const lead = leadCounts[p] || 0;
-    const fullName = pfl(p);
+function renderPWT(sorted,wonCounts,leadCounts,totalWon,totalLead,resultsIn,total){
+  const tbody=g('pwt-body');
+  tbody.innerHTML=sorted.map(([p,tot])=>{
+    const col=pc(p),won=wonCounts[p]||0,lead=leadCounts[p]||0;
     return `<tr>
-      <td>
-        <div class="party-cell">
-          <div class="party-bar" style="background:${col}"></div>
-          <div class="party-text">
-            <div class="party-fullname">${fullName} &mdash; ${p}</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="party-cell"><div class="party-bar" style="background:${col}"></div>
+      <div><div class="party-fullname">${pfl(p)} — ${p}</div></div></div></td>
       <td class="num">${won}</td>
-      <td class="leading" style="color:${lead>0?'#2563eb':'var(--dim)'}">${lead > 0 ? lead : 0}</td>
+      <td class="leading" style="color:${lead>0?'#2563eb':'var(--dim)'}">${lead||0}</td>
       <td class="num"><strong>${tot}</strong></td>
     </tr>`;
   }).join('');
-
-  g('ft-won').textContent   = totalWon;
-  g('ft-lead').textContent  = totalLead;
-  g('ft-total').textContent = resultsIn;
-  g('pwt-sub').textContent  = `${resultsIn} of ${total} results in`;
+  g('ft-won').textContent=totalWon;
+  g('ft-lead').textContent=totalLead;
+  g('ft-total').textContent=resultsIn;
+  g('pwt-sub').textContent=`${resultsIn} of ${total} results in`;
 }
 
-
-function renderSummary(resultsIn, pending, total, sorted) {
-  g('sc-in').textContent    = resultsIn;
-  g('sc-in-pct').textContent = Math.round(resultsIn/total*100) + '% of total';
-  g('sc-pend').textContent  = pending;
+function renderSummary(resultsIn,pending,total){
+  g('sc-in').textContent=resultsIn;
+  g('sc-in-pct').textContent=Math.round(resultsIn/total*100)+'% of total';
+  g('sc-pend').textContent=pending;
 }
-function renderSeatGrid(tableData, cmap, resultsIn, total) {
-  const sg = g('sgrid');
-  const tt = g('tt');
-  sg.innerHTML = '';
 
-  tableData.forEach(([party,,num]) => {
-    const s   = document.createElement('div');
-    const col = pc(party);
-    s.className = 'sq' + (party === 'NA' ? ' pend' : '');
-    s.style.background = col;
-
-    s.addEventListener('mousemove', e => {
-      const ci = cmap[num] || {};
-      tt.style.display = 'block';
-      tt.style.left = (e.clientX + 14) + 'px';
-      tt.style.top  = (e.clientY - 55) + 'px';
-      g('tt-num').textContent   = `Constituency #${num}`;
-      g('tt-party').textContent = party === 'NA' ? 'Pending' : party;
-      g('tt-party').style.color = col;
-      g('tt-cand').textContent  = (ci.name && ci.name !== 'NA') ? ci.name : '—';
+function renderSeatGrid(tableData,cmap,resultsIn,total,code){
+  const sg=g('sgrid'),tt=g('tt');
+  sg.innerHTML='';
+  tableData.forEach(([party,,num])=>{
+    const s=document.createElement('div');
+    const col=pc(party);
+    s.className='sq'+(party==='NA'?' pend':'');
+    s.style.background=col;
+    const cname=getConstName(code,num);
+    s.addEventListener('mousemove',e=>{
+      const ci=cmap[num]||{};
+      tt.style.display='block';
+      tt.style.left=(e.clientX+14)+'px';
+      tt.style.top=(e.clientY-65)+'px';
+      g('tt-num').textContent=`AC #${num}`;
+      g('tt-const').textContent=cname;
+      g('tt-party').textContent=party==='NA'?'Pending':party;
+      g('tt-party').style.color=col;
+      g('tt-cand').textContent=(ci.name&&ci.name!=='NA')?ci.name:'—';
     });
-    s.addEventListener('mouseleave', () => { tt.style.display = 'none'; });
+    s.addEventListener('mouseleave',()=>{tt.style.display='none';});
     sg.appendChild(s);
   });
-
-  const pct = Math.round(resultsIn / total * 100);
-  g('seat-sub').textContent    = `${resultsIn} in · ${total - resultsIn} pending`;
-  g('cp-fill').style.width     = pct + '%';
-  g('cp-pct').textContent      = pct + '%';
-  g('cp-lbl').textContent      = resultsIn < total ? 'Results coming in' : 'All results in';
-
-  const counts2 = {};
+  const pct=Math.round(resultsIn/total*100);
+  g('seat-sub').textContent=`${resultsIn} in · ${total-resultsIn} pending`;
+  g('cp-fill').style.width=pct+'%';
+  g('cp-pct').textContent=pct+'%';
+  g('cp-lbl').textContent=resultsIn<total?'Results coming in':'All results in';
+  const counts2={};
   tableData.filter(([p])=>p!=='NA').forEach(([p])=>{counts2[p]=(counts2[p]||0)+1;});
-  const seenP = Object.entries(counts2).sort((a,b)=>b[1]-a[1]).map(([p])=>p);
-  g('sleg').innerHTML = seenP.slice(0,10).map(p =>
+  const seenP=Object.entries(counts2).sort((a,b)=>b[1]-a[1]).map(([p])=>p);
+  g('sleg').innerHTML=seenP.slice(0,10).map(p=>
     `<span class="sli"><span class="sld" style="background:${pc(p)}"></span>${p} (${counts2[p]})</span>`
-  ).join('') + (total-resultsIn > 0
-    ? `<span class="sli"><span class="sld" style="background:var(--faint);opacity:.4"></span>Pending (${total-resultsIn})</span>`
-    : '');
+  ).join('')+(total-resultsIn>0
+    ?`<span class="sli"><span class="sld" style="background:var(--faint);opacity:.4"></span>Pending (${total-resultsIn})</span>`:'');
 }
 
-
-function renderBars(sorted) {
-  const el = g('bars-list');
-  el.innerHTML = '';
-  if (!sorted.length) return;
-  const mx = sorted[0][1];
-  sorted.slice(0, 12).forEach(([p, c]) => {
-    const col = pc(p);
-    const pct = mx > 0 ? Math.max(Math.round((c/mx)*100), c>0?4:0) : 0;
-    const row = document.createElement('div');
-    row.className = 'bar-row';
-    row.innerHTML = `
-      <div class="bar-name" style="color:${col}">${p}</div>
-      <div class="bar-track">
-        <div class="bar-fill" style="width:${pct}%;background:${col}">
-          ${c>3?`<span class="bar-fill-lbl">${c}</span>`:''}
-        </div>
-      </div>
+function renderBars(sorted){
+  const el=g('bars-list');el.innerHTML='';
+  if(!sorted.length)return;
+  const mx=sorted[0][1];
+  sorted.slice(0,12).forEach(([p,c])=>{
+    const col=pc(p),pct=mx>0?Math.max(Math.round((c/mx)*100),c>0?4:0):0;
+    const row=document.createElement('div');
+    row.className='bar-row';
+    row.innerHTML=`<div class="bar-name" style="color:${col}">${p}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${col}">
+      ${c>3?`<span class="bar-fill-lbl">${c}</span>`:''}</div></div>
       <div class="bar-count" style="color:${col}">${c}</div>`;
     el.appendChild(row);
   });
 }
 
-
-function renderDonut(sorted, resultsIn) {
-  const top  = sorted.slice(0,8);
-  const rest = sorted.slice(8).reduce((s,[,v])=>s+v,0);
-  const lbls = top.map(([p])=>p);
-  const data = top.map(([,v])=>v);
-  const cols = top.map(([p])=>pc(p));
-  if (rest>0){lbls.push('Others');data.push(rest);cols.push('#94a3b8');}
-
-  g('dc-num').textContent = resultsIn;
-
-  const ctx = g('dc').getContext('2d');
-  if (donutChart) {
-    donutChart.data.labels = lbls;
-    donutChart.data.datasets[0].data = data;
-    donutChart.data.datasets[0].backgroundColor = cols;
+function renderDonut(sorted,resultsIn){
+  const top=sorted.slice(0,8),rest=sorted.slice(8).reduce((s,[,v])=>s+v,0);
+  const lbls=top.map(([p])=>p),data=top.map(([,v])=>v),cols=top.map(([p])=>pc(p));
+  if(rest>0){lbls.push('Others');data.push(rest);cols.push('#94a3b8');}
+  g('dc-num').textContent=resultsIn;
+  const ctx=g('dc').getContext('2d');
+  if(donutChart){
+    donutChart.data.labels=lbls;
+    donutChart.data.datasets[0].data=data;
+    donutChart.data.datasets[0].backgroundColor=cols;
     donutChart.update('active');
   } else {
-    donutChart = new Chart(ctx,{
+    donutChart=new Chart(ctx,{
       type:'doughnut',
       data:{labels:lbls,datasets:[{data,backgroundColor:cols,borderWidth:2,borderColor:'#fff',hoverBorderColor:'#1e293b',hoverBorderWidth:2}]},
       options:{
-        responsive:true,maintainAspectRatio:false,cutout:'67%',
-        animation:{duration:700},
+        responsive:true,maintainAspectRatio:false,cutout:'67%',animation:{duration:700},
         plugins:{
           legend:{display:false},
           tooltip:{
@@ -669,53 +559,55 @@ function renderDonut(sorted, resultsIn) {
       }
     });
   }
-  g('dleg').innerHTML = top.map(([p,c])=>
+  g('dleg').innerHTML=top.map(([p,c])=>
     `<span class="dli"><span class="dls" style="background:${pc(p)}"></span>${p} ${c}</span>`
   ).join('');
 }
 
-
-function renderCandTable_data(tableData, cmap) {
-  allCands = tableData.map(([party,,num,status]) => {
-    const ci = cmap[num]||{};
+function renderCandTable_data(tableData,cmap,code){
+  allCands=tableData.map(([party,,num,status])=>{
+    const ci=cmap[num]||{};
     return {
-      num, party,
-      name: (ci.name && ci.name!=='NA') ? ci.name : null,
-      status: party==='NA' ? 'pend' : 'in',
-      won: status==='WON'||status==='W',
+      num,party,
+      constName: getConstName(code, num),
+      name:(ci.name&&ci.name!=='NA')?ci.name:null,
+      status:party==='NA'?'pend':'in',
+      won:status==='WON'||status==='W',
     };
   });
-
-  const psel = g('pf');
-  const existing = new Set([...psel.options].map(o=>o.value));
+  const psel=g('pf');
+  const existing=new Set([...psel.options].map(o=>o.value));
   [...new Set(tableData.map(([p])=>p).filter(p=>p!=='NA'))].sort().forEach(p=>{
     if(!existing.has(p)){
       const o=document.createElement('option');
-      o.value=p; o.textContent=`${pfl(p)} (${p})`;
+      o.value=p;o.textContent=`${pfl(p)} (${p})`;
       psel.appendChild(o);
     }
   });
   renderCandRows();
 }
 
-function renderCandRows() {
-  const s   = g('si').value.toLowerCase().trim();
-  const pfv = g('pf').value;
-  const sfv = g('sf').value;
-
-  const f = allCands.filter(c => {
-    const ms  = !s || (c.name&&c.name.toLowerCase().includes(s)) || String(c.num).includes(s) || c.party.toLowerCase().includes(s);
-    const mp  = !pfv || c.party===pfv;
-    const mst = !sfv || c.status===sfv;
+function renderCandRows(){
+  const s=g('si').value.toLowerCase().trim();
+  const pfv=g('pf').value,sfv=g('sf').value;
+  const f=allCands.filter(c=>{
+    const ms=!s||(c.name&&c.name.toLowerCase().includes(s))
+      ||c.constName.toLowerCase().includes(s)
+      ||String(c.num).includes(s)
+      ||c.party.toLowerCase().includes(s)
+      ||(pfl(c.party)||'').toLowerCase().includes(s);
+    const mp=!pfv||c.party===pfv;
+    const mst=!sfv||c.status===sfv;
     return ms&&mp&&mst;
   });
-
-  g('ctbody').innerHTML = f.slice(0,150).map(c => {
-    const col    = pc(c.party);
-    const isPend = c.status==='pend';
+  g('ctbody').innerHTML=f.slice(0,200).map(c=>{
+    const col=pc(c.party),isPend=c.status==='pend';
     return `<tr>
       <td class="c-num">${c.num}</td>
-      <td><span class="c-name${isPend?' pend':''}">${c.name||'<span style="color:var(--dim)">—</span>'}</span></td>
+      <td>
+        <div style="font-size:12px;font-weight:600;color:var(--text)">${c.constName}</div>
+        <div class="c-const">${c.name||'<span style="color:var(--dim)">—</span>'}</div>
+      </td>
       <td>${isPend
         ?`<span class="cpill" style="background:#f1f5f9;color:var(--dim)">PENDING</span>`
         :`<span class="cpill" style="background:${col}18;color:${col}">${c.party}</span>`
@@ -723,15 +615,11 @@ function renderCandRows() {
       <td style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${isPend?'var(--dim)':'#2563eb'}">${isPend?'Pending':'● Leading'}</td>
     </tr>`;
   }).join('');
-
-  g('cand-lbl').textContent  = f.length + ' results';
-  g('tfoot-info').textContent = f.length > 150
-    ? `Showing 150 of ${f.length} — refine search`
-    : `${f.length} candidate${f.length!==1?'s':''}`;
+  g('cand-lbl').textContent=f.length+' results';
+  g('tfoot-info').textContent=f.length>200?`Showing 200 of ${f.length} — refine search`:`${f.length} constituency results`;
 }
 
-
-function setStatus(s) {
+function setStatus(s){
   const pill=g('spill'),txt=g('stext');
   pill.className='status-pill '+s;
   txt.textContent=s==='live'?'LIVE':s==='error'?'ERROR':'CONNECTING';
@@ -740,9 +628,9 @@ function showAlert(msg){const a=g('alert-bar');a.textContent='⚠ '+msg;a.classL
 function clearAlert(){g('alert-bar').classList.remove('show');}
 function g(id){return document.getElementById(id);}
 
-g('si').addEventListener('input',  renderCandRows);
-g('pf').addEventListener('change', renderCandRows);
-g('sf').addEventListener('change', renderCandRows);
+g('si').addEventListener('input',renderCandRows);
+g('pf').addEventListener('change',renderCandRows);
+g('sf').addEventListener('change',renderCandRows);
 
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){
