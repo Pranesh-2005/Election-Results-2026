@@ -37,6 +37,19 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .rbtn{background:var(--surface);border:1px solid var(--border2);color:var(--muted);padding:5px 12px;border-radius:5px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:9px;transition:all .15s}
 .rbtn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
 .main{padding:20px 24px;max-width:1400px;margin:0 auto}
+
+/* ── DATA SOURCE WARNING BANNER ── */
+.datasrc-banner{
+  display:flex;align-items:flex-start;gap:10px;
+  background:#fffbeb;border:1px solid #fde68a;border-radius:8px;
+  padding:11px 16px;margin-bottom:16px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:#92400e;line-height:1.6;
+}
+.datasrc-banner svg{flex-shrink:0;margin-top:1px}
+.datasrc-banner strong{color:#78350f;display:block;margin-bottom:2px;font-size:10.5px}
+.datasrc-banner a{color:#b45309;font-weight:700;text-decoration:underline;word-break:break-all}
+.datasrc-banner a:hover{color:#78350f}
+
 #alert-bar{display:none;margin-bottom:16px;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#dc2626}
 #alert-bar.show{display:block}
 .top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
@@ -56,6 +69,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .ph-title{font-size:14px;font-weight:700;color:var(--text)}
 .ph-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
 .pwt-wrap{overflow-x:auto}
+
+/* Party Wise Table — simplified: Party | Seats */
 table.pwt{width:100%;border-collapse:collapse;font-size:13px}
 table.pwt thead tr{border-bottom:2px solid var(--border2)}
 table.pwt thead th{padding:10px 16px;text-align:left;font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;background:var(--surface)}
@@ -63,11 +78,15 @@ table.pwt thead th.num{text-align:right}
 table.pwt tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
 table.pwt tbody tr:hover{background:var(--accent-light)}
 table.pwt tbody td{padding:10px 16px;vertical-align:middle}
-table.pwt tbody td.num{text-align:right;font-family:'Inter',sans-serif;font-weight:400;font-size:13px;color:var(--text)}
-table.pwt tbody td.leading{text-align:right;font-weight:600;font-size:13px;color:var(--leading-blue)}
+table.pwt tbody td.num{text-align:right;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;color:var(--text)}
 table.pwt tfoot tr{border-top:2px solid var(--border2);background:var(--surface2)}
 table.pwt tfoot td{padding:11px 16px;font-weight:700;font-size:13px;color:var(--text)}
 table.pwt tfoot td.num{text-align:right}
+
+/* note inside table footer */
+.pwt-note{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);padding:8px 16px 10px;border-top:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;gap:6px}
+.pwt-note a{color:var(--accent);text-decoration:underline}
+
 .party-cell{display:flex;align-items:center;gap:10px}
 .party-bar{width:4px;height:32px;border-radius:2px;flex-shrink:0}
 .party-fullname{font-size:13px;font-weight:400;color:var(--text)}
@@ -146,18 +165,41 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
 </header>
 
 <div class="main">
+
+  <!-- DATA SOURCE WARNING -->
+  <div class="datasrc-banner">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" style="color:#d97706"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.166-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.459-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/></svg>
+    <div>
+      <strong>⚠ Data Limitation Notice</strong>
+      This dashboard reads from the ECI live JSON feed —
+      <a href="https://results.eci.gov.in/ResultAcGenMay2026/election-json-S22-live.json" target="_blank" rel="noopener">
+        election-json-S22-live.json
+      </a>
+      — which is used as the data source for Chart.js visualisations.
+      This feed provides leading/current standings only and <strong>does not include final "Won" counts or detailed vote tallies</strong>.
+      For official declared winners, full vote counts, and authoritative results please refer to the official ECI results portal:
+      <a href="https://results.eci.gov.in/ResultAcGenMay2026/" target="_blank" rel="noopener">
+        results.eci.gov.in/ResultAcGenMay2026/
+      </a>
+    </div>
+  </div>
+
   <div id="alert-bar"></div>
+
   <div class="state-tabs">
     <div class="stab active" data-s="S22" onclick="switchState('S22')">Tamil Nadu<span class="stab-code">S22 · 234 seats</span></div>
     <div class="stab" data-s="S11" onclick="switchState('S11')">Kerala<span class="stab-code">S11 · 140 seats</span></div>
     <div class="stab" data-s="S03" onclick="switchState('S03')">Assam<span class="stab-code">S03 · 126 seats</span></div>
     <div class="stab" data-s="U07" onclick="switchState('U07')">Puducherry<span class="stab-code">U07 · 30 seats</span></div>
   </div>
+
   <div class="top-row">
     <div class="state-info" id="state-info">Tamil Nadu <small>Total AC: 234</small></div>
     <div class="refresh-hint" id="nxt-wrap">Next refresh in <span id="nxt-sec" style="color:var(--muted);margin-left:3px">30</span>s</div>
   </div>
+
   <div class="grid">
+    <!-- Party Wise Table: Party | Seats only -->
     <div class="panel">
       <div class="ph">
         <span class="ph-title">Party Wise Results</span>
@@ -165,12 +207,28 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
       </div>
       <div class="pwt-wrap">
         <table class="pwt">
-          <thead><tr><th>Party</th><th class="num">Won</th><th class="num">Leading</th><th class="num">Total</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Party</th>
+              <th class="num">Seats (Leading)</th>
+            </tr>
+          </thead>
           <tbody id="pwt-body"></tbody>
-          <tfoot><tr><td><strong>Total</strong></td><td class="num" id="ft-won">0</td><td class="num" id="ft-lead">—</td><td class="num" id="ft-total">—</td></tr></tfoot>
+          <tfoot>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td class="num" id="ft-total">—</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
+      <div class="pwt-note">
+        <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor" style="color:#d97706;flex-shrink:0"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.166-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.459-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+        Seat counts reflect current leading positions from the JSON feed. For official Won/Lost counts visit
+        <a href="https://results.eci.gov.in/ResultAcGenMay2026/" target="_blank" rel="noopener">results.eci.gov.in</a>
+      </div>
     </div>
+
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="scards">
         <div class="sc" style="--cc:#16a34a">
@@ -208,6 +266,7 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
       </div>
     </div>
   </div>
+
   <div class="grid-bottom">
     <div class="panel">
       <div class="ph"><span class="ph-title">Party Tally</span></div>
@@ -246,37 +305,16 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
 </div>
 
 <script>
+// ── CONSTITUENCY NAME MAPS ──────────────────────────────
+const TN_CONST={1:'Gummidipoondi',2:'Ponneri',3:'Redhills',4:'Poonamallee',5:'Ambattur',6:'Maduravoyal',7:'Tiruvottiyur',8:'Dr Radhakrishnan Nagar',9:'Kolathur',10:'Villivakkam',11:'Thiru-Vi-Ka Nagar',12:'Egmore',13:'Royapuram',14:'Harbour',15:'Chepauk-Thiruvallikeni',16:'Thousand Lights',17:'Anna Nagar',18:'Virugambakkam',19:'Saidapet',20:'Thiyagarayanagar',21:'Mylapore',22:'Velachery',23:'Sholinganallur',24:'Perungudi',25:'Thuraipakkam',26:'Tambaram',27:'Pallavaram',28:'Anakaputhur',29:'Chrompet',30:'St Thomas Mount',31:'Chengalpattu',32:'Thiruporur',33:'Cheyyur',34:'Madurantakam',35:'Uthiramerur',36:'Kancheepuram',37:'Arakkonam',38:'Sholinghur',39:'Katpadi',40:'Ranipet',41:'Arcot',42:'Vellore',43:'Anaikattu',44:'Kilvaithinankuppam',45:'Gudiyatham',46:'Vaniyambadi',47:'Ambur',48:'Jolarpet',49:'Tirupattur',50:'Natrampalli',51:'Krishnagiri',52:'Veppanahalli',53:'Hosur',54:'Thalli',55:'Palacodu',56:'Pennagaram',57:'Dharmapuri',58:'Pappireddippatti',59:'Harur',60:'Bargur',61:'Omalur',62:'Mettur',63:'Edappadi',64:'Salem',65:'Veerapandi',66:'Attur',67:'Yercaud',68:'Gangavalli',69:'Rasipuram',70:'Sendamangalam',71:'Namakkal',72:'Paramathi-Velur',73:'Tiruchengode',74:'Erode',75:'Modakkurichi',76:'Bhavani',77:'Anthiyur',78:'Gobichettipalayam',79:'Bhavanisagar',80:'Sathyamangalam',81:'Palladam',82:'Avinashi',83:'Tiruppur',84:'Udumalpet',85:'Palani',86:'Pollachi',87:'Kinathukadavu',88:'Coimbatore North',89:'Coimbatore South',90:'Singanallur',91:'Karamadai',92:'Mettupalayam',93:'Gudalur',94:'Nilgiris',95:'Gudalur TK',96:'Coonoor',97:'Mettuppalayam Nilgiris',98:'Dharapuram',99:'Kangayam',100:'Perundurai',101:'Thirumangalam',102:'Usilampatti',103:'Andipatti',104:'Sholavandan',105:'Madurai East',106:'Sivakasi',107:'Virudhunagar',108:'Aruppukkottai',109:'Srivilliputhur',110:'Sattur',111:'Watrap',112:'Rajapalayam',113:'Thenkasi',114:'Alangulam',115:'Tenkasi',116:'Vasudevanallur',117:'Kadayanallur',118:'Sankarankovil',119:'Sivakasi South',120:'Tiruchuli',121:'Paramakudi',122:'Sathankulam',123:'Kovilpatti',124:'Ottapidaram',125:'Vilathikulam',126:'Thoothukudi',127:'Tiruchendur',128:'Srivaikuntam',129:'Radhapuram',130:'Valliyur',131:'Nanguneri',132:'Cheranmahadevi',133:'Palayamkottai',134:'Tirunelveli',135:'Ambasamudram',136:'Alangulam S',137:'Kallidaikurichi',138:'Karunkulam',139:'Sankarankovil S',140:'Vikramasingapuram',141:'Keelapavoor',142:'Tenkasi S',143:'Vickramasingapuram',144:'Shencottah',145:'Kuruvikulam',146:'Punalur',147:'Karur',148:'Aravakurichi',149:'Kulithalai',150:'Manapparai',151:'Srirangam',152:'Tiruchirappalli West',153:'Tiruchirappalli East',154:'Thiruverumbur',155:'Lalgudi',156:'Manachanallur',157:'Musiri',158:'Thuraiyur',159:'Perambalur',160:'Kunnam',161:'Ariyalur',162:'Jayankondam',163:'Vriddhachalam',164:'Virudhachalam',165:'Neyveli',166:'Panruti',167:'Cuddalore',168:'Kurinjipadi',169:'Bhuvanagiri',170:'Chidambaram',171:'Kattumannarkoil',172:'Sirkazhi',173:'Mayiladuthurai',174:'Poompuhar',175:'Nagapattinam',176:'Kilvelur',177:'Vedaranyam',178:'Thiruthuraipoondi',179:'Papanasam',180:'Kumbakonam',181:'Thanjavur',182:'Orathanadu',183:'Pattukkottai',184:'Peravurani',185:'Aranthangi',186:'Manamelkudi',187:'Papanasam T',188:'Thiruvaiyaru',189:'Thiruvidaimaruthur',190:'Mannargudi',191:'Needamangalam',192:'Thiruturaipondi',193:'Pattukottai T',194:'Natham',195:'Dindigul',196:'Vedasandur',197:'Aravakurichi D',198:'Kulithalai D',199:'Pennalur',200:'Attur S',201:'Salem West',202:'Pethanaickenpalayam',203:'Rasipuram S',204:'Tiruchengode S',205:'Erode S',206:'Bhavani S',207:'Anthiyur S',208:'Gobichettipalayam S',209:'Bhavanisagar S',210:'Perundurai S',211:'Dharapuram S',212:'Kangayam S',213:'Palladam S',214:'Avinashi S',215:'Tiruppur S',216:'Pollachi S',217:'Coimbatore N',218:'Coimbatore S',219:'Singanallur S',220:'Karamadai S',221:'Mettupalayam S',222:'Udagamandalam',223:'Gudalur S',224:'Munsif Pattinam',225:'Pattiveeranpatti',226:'Melur',227:'Madurai North',228:'Madurai South',229:'Madurai Central',230:'Madurai West',231:'Tirumangalam T',232:'Paramakudi T',233:'Keelakarai',234:'Ramanathapuram'};
+const KL_CONST={1:'Kasaragod',2:'Uduma',3:'Manjeshwaram',4:'Kanhangad',5:'Trikaripur',6:'Payyanur',7:'Kalliasseri',8:'Thalassery',9:'Kuthuparamba',10:'Mattannur',11:'Peravoor',12:'Iritty',13:'Koothuparamba',14:'Mananthavady',15:'Sulthan Bathery',16:'Kalpetta',17:'Thiruvambady',18:'Eranad',19:'Nilambur',20:'Wandoor',21:'Tirur',22:'Tanur',23:'Tirurangadi',24:'Mankada',25:'Malappuram',26:'Perinthalmanna',27:'Areekode',28:'Kondotty',29:'Manjeri',30:'Kottakkal',31:'Thavanur',32:'Ponnani',33:'Thrithala',34:'Pattambi',35:'Shornur',36:'Ottapalam',37:'Kongad',38:'Mannarkkad',39:'Malampuzha',40:'Palakkad',41:'Tarur',42:'Chittur',43:'Nenmara',44:'Alathur',45:'Chelakkara',46:'Kunnamkulam',47:'Guruvayur',48:'Manalur',49:'Wadakkanchery',50:'Ollur',51:'Thrissur',52:'Nattika',53:'Irinjalakuda',54:'Puthukkad',55:'Chalakudy',56:'Kodungallur',57:'Perumbavoor',58:'Angamaly',59:'Aluva',60:'Kalamassery',61:'Paravur',62:'Vypin',63:'Kozhikode North',64:'Kozhikode South',65:'Beypore',66:'Elathur',67:'Kozhikode',68:'Kunnamangalam',69:'Balussery',70:'Thiruvambadi',71:'Koduvally',72:'Koyilandy',73:'Perambra',74:'Vatakara',75:'Nadapuram',76:'Kuttiyadi',77:'Feroke',78:'Ernakulam',79:'Tripunithura',80:'Thrippunithura',81:'Thrikkakara',82:'Kunnathunadu',83:'Piravom',84:'Muvattupuzha',85:'Kothamangalam',86:'Devikulam',87:'Udumbanchola',88:'Thodupuzha',89:'Idukki',90:'Peerumade',91:'Muvattupuzha T',92:'Aroor',93:'Cherthala',94:'Alappuzha',95:'Ambalappuzha',96:'Haripad',97:'Kayamkulam',98:'Mavelikkara',99:'Chengannur',100:'Thiruvalla',101:'Ranni',102:'Aranmula',103:'Konni',104:'Adoor',105:'Karunagappally',106:'Kunnathur',107:'Kottarakkara',108:'Pathanapuram',109:'Punalur',110:'Chadayamangalam',111:'Kollam',112:'Eravipuram',113:'Kunnathur T',114:'Chavara',115:'Kochi',116:'Thrippunithura T',117:'Vadavukode-Puthenkuriz',118:'Kunnathunad',119:'Kothamangalam T',120:'Thodupuzha T',121:'Nedumangad',122:'Vattiyoorkavu',123:'Thiruvananthapuram',124:'Nemom',125:'Aruvikkara',126:'Kattakkada',127:'Chirayinkeezhu',128:'Attingal',129:'Varkala',130:'Parassala',131:'Kovalam',132:'Neyyattinkara',133:'Kazhakkoottam',134:'Kizhuvilam',135:'Palode',136:'Kattakkada T',137:'Ettumanur',138:'Kanjirappally',139:'Pampady',140:'Vaikom'};
+const AS_CONST={1:'Mankachar',2:'Salmara',3:'Bilasipara West',4:'Bilasipara East',5:'Golakganj',6:'Gauripur',7:'Dhubri',8:'Gauripur T',9:'Jaleswar',10:'Baghbar',11:'Sarukhetri',12:'Chenga',13:'Boko',14:'Chaygaon',15:'Palasbari',16:'Jalukbari',17:'Dispur',18:'Gauhati East',19:'Gauhati West',20:'Jhalukbari',21:'Hajo',22:'Kamalpur',23:'Rangia',24:'Chamaria',25:'Barpeta',26:'Jania',27:'Baghbar T',28:'Sorbhog',29:'Bongaigaon',30:'Bijni',31:'Abhayapuri North',32:'Abhayapuri South',33:'Bhabanipur',34:'Patacharkuchi',35:'Barpeta Road',36:'Chenga T',37:'Tihu',38:'Nalbari',39:'Bardho',40:'Dharmapur',41:'Pakkabar',42:'Chaygaon T',43:'Hathsingimari',44:'South Salmara',45:'Rupsi',46:'Kalgachia',47:'Duni',48:'Tamulpur',49:'Baganpara',50:'Sipajhar',51:'Mangaldoi',52:'Dalgaon',53:'Udalguri',54:'Mazbat',55:'Kalaigaon',56:'Rowta',57:'Bihali',58:'Borchala',59:'Dhemaji',60:'Jonai',61:'Majabat',62:'Gogamukh',63:'Dhakuakhana',64:'Lakhimpur',65:'Biswanath',66:'Behali',67:'Tezpur',68:'Sootea',69:'Bihpuria',70:'Naoboicha',71:'Borgolai',72:'Chabua',73:'Moran',74:'Dibrugarh',75:'Lahowal',76:'Duliajan',77:'Tingkhong',78:'Naharkatia',79:'Digboi',80:'Tinsukia',81:'Doomdooma',82:'Margherita',83:'Sadiya',84:'Sibsagar',85:'Sonari',86:'Thowra',87:'Amguri',88:'Nazira',89:'Mahmora',90:'Golaghat',91:'Sarupathar',92:'Khumtai',93:'Dhansiri',94:'Furkating',95:'Jorhat',96:'Titabar',97:'Majuli',98:'Mariani',99:'Teok',100:'Dergaon',101:'Golaghat T',102:'Bokakhat',103:'Kaliabor',104:'Nagaon',105:'Barhampur',106:'Lumding',107:'Hojai',108:'Doboka',109:'Kampur',110:'Raha',111:'Rupahihat',112:'Nowgong',113:'Samaguri',114:'Batadrawa',115:'Dhing',116:'Jagiroad',117:'Morigaon',118:'Laharighat',119:'Dispur T',120:'Boko T',121:'Sualkuchi',122:'Goroimari',123:'Goreswar',124:'Tamulpur T',125:'Bhawanipur',126:'Sorbhog T'};
+const PY_CONST={1:'Ariyankuppam',2:'Bahour',3:'Kamaraj Nagar',4:'Lawspet',5:'Mannadipet',6:'Mahe',7:'Muthialpet',8:'Nellithope',9:'Oulgaret',10:'Ozhukarai',11:'Rajbhavan',12:'Thattanchavady',13:'Villianur',14:'Vaanur',15:'Mudaliarpet',16:'Pondicherry',17:'Indira Nagar',18:'Embalam',19:'Thirubhuvanai',20:'Yanam',21:'Uppalam',22:'Kadirgamam',23:'Sivakatchi',24:'Manavely',25:'Karikalampakkam',26:'Thirukanur',27:'Oussudu',28:'Reddiarpalayam',29:'Korkadu',30:'Nedungadu'};
+const CONST_MAP={S22:TN_CONST,S11:KL_CONST,S03:AS_CONST,U07:PY_CONST};
+function getConstName(sc,num){const m=CONST_MAP[sc];return m?m[parseInt(num)]||`AC ${num}`:`AC ${num}`;}
 
-// Tamil Nadu — all 234 ACs
-const TN_CONST = {
-1:'Gummidipoondi',2:'Ponneri',3:'Redhills',4:'Poonamallee',5:'Ambattur',6:'Maduravoyal',7:'Tiruvottiyur',8:'Dr Radhakrishnan Nagar',9:'Kolathur',10:'Villivakkam',11:'Thiru-Vi-Ka Nagar',12:'Egmore',13:'Royapuram',14:'Harbour',15:'Chepauk-Thiruvallikeni',16:'Thousand Lights',17:'Anna Nagar',18:'Virugambakkam',19:'Saidapet',20:'Thiyagarayanagar',21:'Mylapore',22:'Velachery',23:'Sholinganallur',24:'Perungudi',25:'Thuraipakkam',26:'Tambaram',27:'Pallavaram',28:'Anakaputhur',29:'Chrompet',30:'St Thomas Mount',31:'Chengalpattu',32:'Thiruporur',33:'Cheyyur',34:'Madurantakam',35:'Uthiramerur',36:'Kancheepuram',37:'Arakkonam',38:'Sholinghur',39:'Katpadi',40:'Ranipet',41:'Arcot',42:'Vellore',43:'Anaikattu',44:'Kilvaithinankuppam',45:'Gudiyatham',46:'Vaniyambadi',47:'Ambur',48:'Jolarpet',49:'Tirupattur',50:'Natrampalli',51:'Krishnagiri',52:'Veppanahalli',53:'Hosur',54:'Thalli',55:'Palacodu',56:'Pennagaram',57:'Dharmapuri',58:'Pappireddippatti',59:'Harur',60:'Bargur',61:'Omalur',62:'Mettur',63:'Edappadi',64:'Salem',65:'Veerapandi',66:'Attur',67:'Yercaud',68:'Gangavalli',69:'Rasipuram',70:'Sendamangalam',71:'Namakkal',72:'Paramathi-Velur',73:'Tiruchengode',74:'Erode',75:'Modakkurichi',76:'Bhavani',77:'Anthiyur',78:'Gobichettipalayam',79:'Bhavanisagar',80:'Sathyamangalam',81:'Palladam',82:'Avinashi',83:'Tiruppur',84:'Udumalpet',85:'Palani',86:'Pollachi',87:'Kinathukadavu',88:'Coimbatore North',89:'Coimbatore South',90:'Singanallur',91:'Karamadai',92:'Mettupalayam',93:'Gudalur',94:'Nilgiris',95:'Gudalur TK',96:'Coonoor',97:'Mettuppalayam Nilgiris',98:'Dharapuram',99:'Kangayam',100:'Perundurai',101:'Thirumangalam',102:'Usilampatti',103:'Andipatti',104:'Sholavandan',105:'Madurai East',106:'Sivakasi',107:'Virudhunagar',108:'Aruppukkottai',109:'Srivilliputhur',110:'Sattur',111:'Watrap',112:'Rajapalayam',113:'Thenkasi',114:'Alangulam',115:'Tenkasi',116:'Vasudevanallur',117:'Kadayanallur',118:'Sankarankovil',119:'Sivakasi South',120:'Tiruchuli',121:'Paramakudi',122:'Sathankulam',123:'Kovilpatti',124:'Ottapidaram',125:'Vilathikulam',126:'Thoothukudi',127:'Tiruchendur',128:'Srivaikuntam',129:'Radhapuram',130:'Valliyur',131:'Nanguneri',132:'Cheranmahadevi',133:'Palayamkottai',134:'Tirunelveli',135:'Ambasamudram',136:'Alangulam S',137:'Kallidaikurichi',138:'Karunkulam',139:'Sankarankovil S',140:'Vikramasingapuram',141:'Keelapavoor',142:'Tenkasi S',143:'Vickramasingapuram',144:'Shencottah',145:'Kuruvikulam',146:'Punalur',147:'Karur',148:'Aravakurichi',149:'Kulithalai',150:'Manapparai',151:'Srirangam',152:'Tiruchirappalli West',153:'Tiruchirappalli East',154:'Thiruverumbur',155:'Lalgudi',156:'Manachanallur',157:'Musiri',158:'Thuraiyur',159:'Perambalur',160:'Kunnam',161:'Ariyalur',162:'Jayankondam',163:'Vriddhachalam',164:'Virudhachalam',165:'Neyveli',166:'Panruti',167:'Cuddalore',168:'Kurinjipadi',169:'Bhuvanagiri',170:'Chidambaram',171:'Kattumannarkoil',172:'Sirkazhi',173:'Mayiladuthurai',174:'Poompuhar',175:'Nagapattinam',176:'Kilvelur',177:'Vedaranyam',178:'Thiruthuraipoondi',179:'Papanasam',180:'Kumbakonam',181:'Thanjavur',182:'Orathanadu',183:'Pattukkottai',184:'Peravurani',185:'Aranthangi',186:'Manamelkudi',187:'Papanasam T',188:'Thiruvaiyaru',189:'Thiruvidaimaruthur',190:'Mannargudi',191:'Needamangalam',192:'Thiruturaipondi',193:'Pattukottai T',194:'Natham',195:'Dindigul',196:'Vedasandur',197:'Aravakurichi D',198:'Kulithalai D',199:'Pennalur',200:'Attur S',201:'Salem West',202:'Pethanaickenpalayam',203:'Rasipuram S',204:'Tiruchengode S',205:'Erode S',206:'Bhavani S',207:'Anthiyur S',208:'Gobichettipalayam S',209:'Bhavanisagar S',210:'Perundurai S',211:'Dharapuram S',212:'Kangayam S',213:'Palladam S',214:'Avinashi S',215:'Tiruppur S',216:'Pollachi S',217:'Coimbatore N',218:'Coimbatore S',219:'Singanallur S',220:'Karamadai S',221:'Mettupalayam S',222:'Udagamandalam',223:'Gudalur S',224:'Munsif Pattinam',225:'Pattiveeranpatti',226:'Melur',227:'Madurai North',228:'Madurai South',229:'Madurai Central',230:'Madurai West',231:'Tirumangalam T',232:'Paramakudi T',233:'Keelakarai',234:'Ramanathapuram',
-};
-
-// Kerala — all 140 ACs
-const KL_CONST = {
-1:'Kasaragod',2:'Uduma',3:'Manjeshwaram',4:'Kanhangad',5:'Trikaripur',6:'Payyanur',7:'Kalliasseri',8:'Thalassery',9:'Kuthuparamba',10:'Mattannur',11:'Peravoor',12:'Iritty',13:'Koothuparamba',14:'Mananthavady',15:'Sulthan Bathery',16:'Kalpetta',17:'Thiruvambady',18:'Eranad',19:'Nilambur',20:'Wandoor',21:'Tirur',22:'Tanur',23:'Tirurangadi',24:'Mankada',25:'Malappuram',26:'Perinthalmanna',27:'Areekode',28:'Kondotty',29:'Manjeri',30:'Kottakkal',31:'Thavanur',32:'Ponnani',33:'Thrithala',34:'Pattambi',35:'Shornur',36:'Ottapalam',37:'Kongad',38:'Mannarkkad',39:'Malampuzha',40:'Palakkad',41:'Tarur',42:'Chittur',43:'Nenmara',44:'Alathur',45:'Chelakkara',46:'Kunnamkulam',47:'Guruvayur',48:'Manalur',49:'Wadakkanchery',50:'Ollur',51:'Thrissur',52:'Nattika',53:'Irinjalakuda',54:'Puthukkad',55:'Chalakudy',56:'Kodungallur',57:'Perumbavoor',58:'Angamaly',59:'Aluva',60:'Kalamassery',61:'Paravur',62:'Vypin',63:'Kozhikode North',64:'Kozhikode South',65:'Beypore',66:'Elathur',67:'Kozhikode',68:'Kunnamangalam',69:'Balussery',70:'Thiruvambadi',71:'Koduvally',72:'Koyilandy',73:'Perambra',74:'Vatakara',75:'Nadapuram',76:'Kuttiyadi',77:'Feroke',78:'Ernakulam',79:'Tripunithura',80:'Thrippunithura',81:'Thrikkakara',82:'Kunnathunadu',83:'Piravom',84:'Muvattupuzha',85:'Kothamangalam',86:'Devikulam',87:'Udumbanchola',88:'Thodupuzha',89:'Idukki',90:'Peerumade',91:'Muvattupuzha T',92:'Aroor',93:'Cherthala',94:'Alappuzha',95:'Ambalappuzha',96:'Haripad',97:'Kayamkulam',98:'Mavelikkara',99:'Chengannur',100:'Thiruvalla',101:'Ranni',102:'Aranmula',103:'Konni',104:'Adoor',105:'Karunagappally',106:'Kunnathur',107:'Kottarakkara',108:'Pathanapuram',109:'Punalur',110:'Chadayamangalam',111:'Kollam',112:'Eravipuram',113:'Kunnathur T',114:'Chavara',115:'Kochi',116:'Thrippunithura T',117:'Vadavukode-Puthenkuriz',118:'Kunnathunad',119:'Kothamangalam T',120:'Thodupuzha T',121:'Nedumangad',122:'Vattiyoorkavu',123:'Thiruvananthapuram',124:'Nemom',125:'Aruvikkara',126:'Kattakkada',127:'Chirayinkeezhu',128:'Attingal',129:'Varkala',130:'Parassala',131:'Kovalam',132:'Neyyattinkara',133:'Kazhakkoottam',134:'Kizhuvilam',135:'Palode',136:'Kattakkada T',137:'Ettumanur',138:'Kanjirappally',139:'Pampady',140:'Vaikom',
-};
-
-// Assam — all 126 ACs
-const AS_CONST = {
-1:'Mankachar',2:'Salmara',3:'Bilasipara West',4:'Bilasipara East',5:'Golakganj',6:'Gauripur',7:'Dhubri',8:'Gauripur T',9:'Jaleswar',10:'Baghbar',11:'Sarukhetri',12:'Chenga',13:'Boko',14:'Chaygaon',15:'Palasbari',16:'Jalukbari',17:'Dispur',18:'Gauhati East',19:'Gauhati West',20:'Jhalukbari',21:'Hajo',22:'Kamalpur',23:'Rangia',24:'Chamaria',25:'Barpeta',26:'Jania',27:'Baghbar T',28:'Sorbhog',29:'Bongaigaon',30:'Bijni',31:'Abhayapuri North',32:'Abhayapuri South',33:'Bhabanipur',34:'Patacharkuchi',35:'Barpeta Road',36:'Chenga T',37:'Tihu',38:'Nalbari',39:'Bardho',40:'Dharmapur',41:'Pakkabar',42:'Chaygaon T',43:'Hathsingimari',44:'South Salmara',45:'Rupsi',46:'Kalgachia',47:'Duni',48:'Tamulpur',49:'Baganpara',50:'Sipajhar',51:'Mangaldoi',52:'Dalgaon',53:'Udalguri',54:'Mazbat',55:'Kalaigaon',56:'Rowta',57:'Bihali',58:'Borchala',59:'Dhemaji',60:'Jonai',61:'Majabat',62:'Gogamukh',63:'Dhakuakhana',64:'Lakhimpur',65:'Biswanath',66:'Behali',67:'Tezpur',68:'Sootea',69:'Bihpuria',70:'Naoboicha',71:'Borgolai',72:'Chabua',73:'Moran',74:'Dibrugarh',75:'Lahowal',76:'Duliajan',77:'Tingkhong',78:'Naharkatia',79:'Digboi',80:'Tinsukia',81:'Doomdooma',82:'Margherita',83:'Sadiya',84:'Sibsagar',85:'Sonari',86:'Thowra',87:'Amguri',88:'Nazira',89:'Mahmora',90:'Golaghat',91:'Sarupathar',92:'Khumtai',93:'Dhansiri',94:'Furkating',95:'Jorhat',96:'Titabar',97:'Majuli',98:'Mariani',99:'Teok',100:'Dergaon',101:'Golaghat T',102:'Bokakhat',103:'Kaliabor',104:'Nagaon',105:'Barhampur',106:'Lumding',107:'Hojai',108:'Doboka',109:'Kampur',110:'Raha',111:'Rupahihat',112:'Nowgong',113:'Samaguri',114:'Batadrawa',115:'Dhing',116:'Jagiroad',117:'Morigaon',118:'Laharighat',119:'Dispur T',120:'Boko T',121:'Sualkuchi',122:'Goroimari',123:'Goreswar',124:'Tamulpur T',125:'Bhawanipur',126:'Sorbhog T',
-};
-
-// Puducherry — all 30 ACs
-const PY_CONST = {
-1:'Ariyankuppam',2:'Bahour',3:'Kamaraj Nagar',4:'Lawspet',5:'Mannadipet',6:'Mahe',7:'Muthialpet',8:'Nellithope',9:'Oulgaret',10:'Ozhukarai',11:'Rajbhavan',12:'Thattanchavady',13:'Villianur',14:'Vaanur',15:'Mudaliarpet',16:'Pondicherry',17:'Indira Nagar',18:'Embalam',19:'Thirubhuvanai',20:'Yanam',21:'Uppalam',22:'Kadirgamam',23:'Sivakatchi',24:'Manavely',25:'Karikalampakkam',26:'Thirukanur',27:'Oussudu',28:'Reddiarpalayam',29:'Korkadu',30:'Nedungadu',
-};
-
-const CONST_MAP = {S22: TN_CONST, S11: KL_CONST, S03: AS_CONST, U07: PY_CONST};
-
-function getConstName(stateCode, num) {
-  const m = CONST_MAP[stateCode];
-  if (!m) return `AC ${num}`;
-  return m[parseInt(num)] || `AC ${num}`;
-}
-
-
-const PARTY_META = {
+// ── PARTY METADATA ──────────────────────────────────────
+const PARTY_META={
   TVK:{c:'#c026d3',full:'Tamilaga Vettri Kazhagam'},
   DMK:{c:'#059669',full:'Dravida Munnetra Kazhagam'},
   ADMK:{c:'#b45309',full:'All India Anna Dravida Munnetra Kazhagam'},
@@ -290,7 +328,7 @@ const PARTY_META = {
   DMDK:{c:'#ca8a04',full:'Desiya Murpokku Dravida Kazhagam'},
   BOPF:{c:'#2563eb',full:'Bodoland Peoples Front'},
   AGP:{c:'#92400e',full:'Asom Gana Parishad'},
-  UPPL:{c:'#db2777',full:'United People\'s Party Liberal'},
+  UPPL:{c:'#db2777',full:"United People's Party Liberal"},
   AIUDF:{c:'#0369a1',full:'All India United Democratic Front'},
   IUML:{c:'#16a34a',full:'Indian Union Muslim League'},
   RSP:{c:'#6d28d9',full:'Revolutionary Socialist Party'},
@@ -300,93 +338,89 @@ const PARTY_META = {
   CMPKSC:{c:'#7e22ce',full:'Communist Marxist Party of Kerala (SC)'},
   RJD:{c:'#047857',full:'Rashtriya Janata Dal'},
   AINRC:{c:'#0f766e',full:'All India N.R. Congress'},
+  PT:{c:'#2563eb',full:'Puthiya Thalaimurai'},
   IND:{c:'#64748b',full:'Independent'},
   NA:{c:'#d1d5db',full:'Pending'},
 };
-const pc  = p => (PARTY_META[p]||{c:'#94a3b8'}).c;
-const pfl = p => (PARTY_META[p]||{full:p}).full;
+const pc  = p=>(PARTY_META[p]||{c:'#94a3b8'}).c;
+const pfl = p=>(PARTY_META[p]||{full:p}).full;
 
-const STATES = {
-  S22:{name:'Tamil Nadu', seats:234, total_label:'Total AC: 234'},
-  S11:{name:'Kerala',     seats:140, total_label:'Total AC: 140'},
-  S03:{name:'Assam',      seats:126, total_label:'Total AC: 126'},
-  U07:{name:'Puducherry', seats:30,  total_label:'Total AC: 30'},
+const STATES={
+  S22:{name:'Tamil Nadu',seats:234,total_label:'Total AC: 234'},
+  S11:{name:'Kerala',seats:140,total_label:'Total AC: 140'},
+  S03:{name:'Assam',seats:126,total_label:'Total AC: 126'},
+  U07:{name:'Puducherry',seats:30,total_label:'Total AC: 30'},
 };
 
-const ECI_BASE = 'https://results.eci.gov.in/ResultAcGenMay2026/election-json-';
-const INTERVAL  = 30;
-let donutChart  = null;
-let pollTimer   = null;
-let cntTimer    = null;
-let retries     = 0;
-let allData     = {};
-let activeState = 'S22';
-let allCands    = [];
+const ECI_BASE='https://results.eci.gov.in/ResultAcGenMay2026/election-json-';
+const INTERVAL=30;
+let donutChart=null,pollTimer=null,cntTimer=null,retries=0;
+let allData={},activeState='S22',allCands=[];
 
-const PROXIES = [
-  u => u,
-  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-  u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
-  u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+const PROXIES=[
+  u=>u,
+  u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u=>`https://corsproxy.io/?${encodeURIComponent(u)}`,
+  u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
 ];
-let proxyIdx = 0;
+let proxyIdx=0;
 
-async function tryFetch(url) {
+async function tryFetch(url){
   let lastErr;
-  for (let i = 0; i < PROXIES.length; i++) {
-    const idx = (proxyIdx + i) % PROXIES.length;
-    try {
-      const res = await fetch(PROXIES[idx](url),{
+  for(let i=0;i<PROXIES.length;i++){
+    const idx=(proxyIdx+i)%PROXIES.length;
+    try{
+      const res=await fetch(PROXIES[idx](url),{
         cache:'no-store',
         headers:{'Accept':'application/json,*/*','Accept-Language':'en-IN,en;q=0.9'},
         signal:AbortSignal.timeout(12000),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      if (!json || typeof json !== 'object') throw new Error('Invalid JSON');
-      proxyIdx = idx;
+      if(!res.ok)throw new Error(`HTTP ${res.status}`);
+      const json=await res.json();
+      if(!json||typeof json!=='object')throw new Error('Invalid JSON');
+      proxyIdx=idx;
       return json;
-    } catch(e){lastErr=e;}
+    }catch(e){lastErr=e;}
   }
   throw lastErr;
 }
 
-async function poll() {
+async function poll(){
   setStatus('connecting');
-  let fetched = false;
-  try {
-    const json = await tryFetch(`${ECI_BASE}live.json`);
+  let fetched=false;
+  try{
+    const json=await tryFetch(`${ECI_BASE}live.json`);
     Object.keys(STATES).forEach(k=>{if(json[k])allData[k]=json[k];});
-    fetched = true;
-  } catch(e){}
-  if (!allData[activeState]) {
-    try {
-      const json = await tryFetch(`${ECI_BASE}${activeState}-live.json`);
-      allData[activeState] = json[activeState] ? json[activeState] : json;
-      fetched = true;
-    } catch(e){fetched=false;}
+    fetched=true;
+  }catch(e){}
+  if(!allData[activeState]){
+    try{
+      const json=await tryFetch(`${ECI_BASE}${activeState}-live.json`);
+      allData[activeState]=json[activeState]?json[activeState]:json;
+      fetched=true;
+    }catch(e){fetched=false;}
   }
-  if (fetched || allData[activeState]) {
-    retries=0; clearAlert();
+  if(fetched||allData[activeState]){
+    retries=0;clearAlert();
     renderState(activeState);
     setStatus('live');
-    g('ts').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  } else {
+    g('ts').textContent='Updated '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }else{
     retries++;
     setStatus('error');
-    showAlert('Could not fetch ECI data' + (retries>=2?' — ECI may require Indian IP.':' — retrying…'));
+    showAlert('Could not fetch ECI data'+(retries>=2?' — ECI requires Indian IP. Open this from an Indian network or visit results.eci.gov.in directly.':' — retrying…'));
   }
   schedule();
 }
 
-function schedule() {
-  if (pollTimer) clearTimeout(pollTimer);
-  const delay = Math.min(INTERVAL * Math.max(retries,1), 120)*1000;
-  pollTimer = setTimeout(poll, delay);
+function schedule(){
+  if(pollTimer)clearTimeout(pollTimer);
+  const delay=Math.min(INTERVAL*Math.max(retries,1),120)*1000;
+  pollTimer=setTimeout(poll,delay);
   startCountdown(Math.round(delay/1000));
 }
 
-function startCountdown(secs) {
+function startCountdown(secs){
   let c=secs;
   const wrap=g('nxt-wrap');
   wrap.innerHTML=`Next refresh in <span id="nxt-sec" style="color:var(--muted);margin-left:3px">${c}</span>s`;
@@ -414,38 +448,28 @@ function switchState(code){
   else fetchNow();
 }
 
-
 function renderState(code){
   const raw=allData[code];
   if(!raw)return;
   const sd=raw[code]?raw[code]:raw;
   const chartData=sd.chartData||[];
   const tableData=sd.tableData||[];
-
   const cmap={};
   chartData.forEach(([party,,num,name])=>{cmap[num]={party,name};});
 
-  const wonCounts={}, leadCounts={};
-  tableData.forEach(row=>{
-    const party=row[0],status=row[3]||null;
+  // Count seats per party (no won/leading distinction — feed doesn't reliably expose it)
+  const counts={};
+  tableData.forEach(([party])=>{
     if(party==='NA')return;
-    if(status==='WON'||status==='W')wonCounts[party]=(wonCounts[party]||0)+1;
-    else leadCounts[party]=(leadCounts[party]||0)+1;
+    counts[party]=(counts[party]||0)+1;
   });
-
-  const allParties=new Set([...Object.keys(wonCounts),...Object.keys(leadCounts)]);
-  const totals={};
-  allParties.forEach(p=>{totals[p]=(wonCounts[p]||0)+(leadCounts[p]||0);});
-
   const pending=tableData.filter(r=>r[0]==='NA').length;
   const total=tableData.length;
   const resultsIn=total-pending;
-  const sorted=Object.entries(totals).sort((a,b)=>b[1]-a[1]);
-  const totalWon=Object.values(wonCounts).reduce((s,v)=>s+v,0);
-  const totalLead=Object.values(leadCounts).reduce((s,v)=>s+v,0);
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
 
   g('state-info').innerHTML=`${STATES[code]?.name} <small>${STATES[code]?.total_label}</small>`;
-  renderPWT(sorted,wonCounts,leadCounts,totalWon,totalLead,resultsIn,total);
+  renderPWT(sorted,resultsIn,total);
   renderSummary(resultsIn,pending,total);
   renderSeatGrid(tableData,cmap,resultsIn,total,code);
   renderBars(sorted);
@@ -453,20 +477,19 @@ function renderState(code){
   renderCandTable_data(tableData,cmap,code);
 }
 
-function renderPWT(sorted,wonCounts,leadCounts,totalWon,totalLead,resultsIn,total){
+// Party Wise Table — Party | Seats only
+function renderPWT(sorted,resultsIn,total){
   const tbody=g('pwt-body');
-  tbody.innerHTML=sorted.map(([p,tot])=>{
-    const col=pc(p),won=wonCounts[p]||0,lead=leadCounts[p]||0;
+  tbody.innerHTML=sorted.map(([p,c])=>{
+    const col=pc(p);
     return `<tr>
-      <td><div class="party-cell"><div class="party-bar" style="background:${col}"></div>
-      <div><div class="party-fullname">${pfl(p)} — ${p}</div></div></div></td>
-      <td class="num">${won}</td>
-      <td class="leading" style="color:${lead>0?'#2563eb':'var(--dim)'}">${lead||0}</td>
-      <td class="num"><strong>${tot}</strong></td>
+      <td><div class="party-cell">
+        <div class="party-bar" style="background:${col}"></div>
+        <div><div class="party-fullname" title="${pfl(p)}">${pfl(p)} — <strong>${p}</strong></div></div>
+      </div></td>
+      <td class="num">${c}</td>
     </tr>`;
   }).join('');
-  g('ft-won').textContent=totalWon;
-  g('ft-lead').textContent=totalLead;
   g('ft-total').textContent=resultsIn;
   g('pwt-sub').textContent=`${resultsIn} of ${total} results in`;
 }
@@ -541,7 +564,7 @@ function renderDonut(sorted,resultsIn){
     donutChart.data.datasets[0].data=data;
     donutChart.data.datasets[0].backgroundColor=cols;
     donutChart.update('active');
-  } else {
+  }else{
     donutChart=new Chart(ctx,{
       type:'doughnut',
       data:{labels:lbls,datasets:[{data,backgroundColor:cols,borderWidth:2,borderColor:'#fff',hoverBorderColor:'#1e293b',hoverBorderWidth:2}]},
@@ -565,14 +588,13 @@ function renderDonut(sorted,resultsIn){
 }
 
 function renderCandTable_data(tableData,cmap,code){
-  allCands=tableData.map(([party,,num,status])=>{
+  allCands=tableData.map(([party,,num])=>{
     const ci=cmap[num]||{};
     return {
       num,party,
-      constName: getConstName(code, num),
+      constName:getConstName(code,num),
       name:(ci.name&&ci.name!=='NA')?ci.name:null,
       status:party==='NA'?'pend':'in',
-      won:status==='WON'||status==='W',
     };
   });
   const psel=g('pf');
@@ -591,7 +613,8 @@ function renderCandRows(){
   const s=g('si').value.toLowerCase().trim();
   const pfv=g('pf').value,sfv=g('sf').value;
   const f=allCands.filter(c=>{
-    const ms=!s||(c.name&&c.name.toLowerCase().includes(s))
+    const ms=!s
+      ||(c.name&&c.name.toLowerCase().includes(s))
       ||c.constName.toLowerCase().includes(s)
       ||String(c.num).includes(s)
       ||c.party.toLowerCase().includes(s)
@@ -606,7 +629,7 @@ function renderCandRows(){
       <td class="c-num">${c.num}</td>
       <td>
         <div style="font-size:12px;font-weight:600;color:var(--text)">${c.constName}</div>
-        <div class="c-const">${c.name||'<span style="color:var(--dim)">—</span>'}</div>
+        <div class="c-const">${c.name||`<span style="color:var(--dim)">—</span>`}</div>
       </td>
       <td>${isPend
         ?`<span class="cpill" style="background:#f1f5f9;color:var(--dim)">PENDING</span>`
