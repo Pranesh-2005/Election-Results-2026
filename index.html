@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECI — Live Assembly Results 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f6fa;--surface:#ffffff;--surface2:#f8f9fc;--surface3:#eef0f7;
+  --border:#e2e5ef;--border2:#c8ccdb;
+  --text:#12192e;--muted:#6b7494;--dim:#9ba3bc;--faint:#d4d8e8;
+  --accent:#5c6bc0;--accent-light:#eef0fd;
+  --tvk:#c026d3;--dmk:#059669;--admk:#b45309;--bjp:#ea580c;
+  --pmk:#65a30d;--inc:#0284c7;--cpi:#dc2626;--cpim:#b91c1c;
+  --vck:#7c3aed;--ammk:#9333ea;--dmdk:#ca8a04;--bopf:#2563eb;
+  --agp:#7c2d12;--uppl:#db2777;--aiudf:#0369a1;--iuml:#16a34a;
+  --rsp:#6d28d9;--kec:#be185d;--ind:#64748b;--rjrd:#047857;--na:#d1d5db;
+  --row-alt:#fafbfe;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh;line-height:1.5}
+
+
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.hdr-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.eci-badge{background:var(--accent);color:#fff;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:1.5px}
+.hdr h1{font-size:14px;font-weight:600;color:var(--text);flex:1;letter-spacing:-.1px}
+.hdr h1 span{color:var(--accent)}
+.hdr-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+
+.status-pill{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;border:1px solid var(--border2);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.5px;background:var(--surface2)}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:#94a3b8}
+.status-pill.live .status-dot{background:#22c55e;animation:blink 1.4s ease-in-out infinite}
+.status-pill.live{border-color:#bbf7d0;background:#f0fdf4}
+.status-pill.live .status-text{color:#16a34a}
+.status-pill.error .status-dot{background:#ef4444}
+.status-pill.error{border-color:#fecaca;background:#fef2f2}
+.status-pill.error .status-text{color:#dc2626}
+.status-pill.connecting .status-dot{background:#f59e0b;animation:blink .8s ease-in-out infinite}
+.status-pill.connecting{border-color:#fde68a;background:#fffbeb}
+.status-pill.connecting .status-text{color:#d97706}
+.status-text{color:var(--muted)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.ts{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim)}
+.rbtn{background:var(--surface);border:1px solid var(--border2);color:var(--muted);padding:5px 12px;border-radius:5px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.5px;transition:all .15s}
+.rbtn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.rbtn:active{transform:scale(.97)}
+
+.main{padding:20px 24px;max-width:1400px;margin:0 auto}
+
+
+#alert-bar{display:none;margin-bottom:16px;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#dc2626}
+#alert-bar.show{display:block}
+
+
+.refresh-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.refresh-row .hint{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim)}
+.refresh-row .hint span{color:var(--muted)}
+
+.state-tabs{display:flex;gap:2px;margin-bottom:20px;background:var(--surface3);border-radius:8px;padding:4px;border:1px solid var(--border)}
+.stab{flex:1;padding:7px 12px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:500;color:var(--muted);transition:all .15s;text-align:center;border:1px solid transparent;background:transparent}
+.stab:hover{color:var(--text);background:var(--surface)}
+.stab.active{background:var(--surface);color:var(--accent);border-color:var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);font-weight:600}
+.stab .stab-code{font-family:'JetBrains Mono',monospace;font-size:8px;display:block;margin-top:1px;opacity:.7}
+
+.summary-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;position:relative;overflow:hidden;transition:box-shadow .15s}
+.sc:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.sc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:8px 0 0 8px;background:var(--accent-color,var(--faint))}
+.sc-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.sc-val{font-size:28px;font-weight:700;line-height:1;color:var(--accent-color,var(--text))}
+.sc-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);margin-top:3px}
+
+
+#leader-banner{display:none;border-radius:8px;padding:14px 20px;margin-bottom:20px;border:1px solid;background}
+.lb-inner{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.lb-block .lb-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px}
+.lb-val{font-size:20px;font-weight:700;line-height:1}
+.lb-sep{width:1px;height:40px;background:var(--border2);flex-shrink:0}
+.lb-maj{flex:1;min-width:200px}
+.lb-maj-labels{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-bottom:5px}
+.lb-track{height:5px;background:var(--surface3);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
+.lb-fill{height:100%;border-radius:3px;transition:width .7s cubic-bezier(.4,0,.2,1)}
+
+.layout{display:grid;grid-template-columns:1fr 420px;gap:16px;margin-bottom:16px}
+.layout-full{display:grid;grid-template-columns:360px 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:960px){.layout,.layout-full{grid-template-columns:1fr}}
+
+/* ── PANEL ── */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.ph{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface)}
+.ph-title{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.ph-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim)}
+
+/* ── PARTY WISE TABLE ── */
+.pwt{width:100%;border-collapse:collapse}
+.pwt thead th{font-size:11px;font-weight:600;color:var(--muted);padding:9px 14px;text-align:left;border-bottom:2px solid var(--border2);background:var(--surface2);white-space:nowrap}
+.pwt thead th.r{text-align:right}
+.pwt tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+.pwt tbody tr:nth-child(even){background:var(--row-alt)}
+.pwt tbody tr:hover{background:var(--accent-light)}
+.pwt tbody td{padding:9px 14px;vertical-align:middle}
+.pwt tbody td.r{text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600}
+.pwt tfoot td{padding:9px 14px;font-weight:700;font-size:13px;border-top:2px solid var(--border2);background:var(--surface2)}
+.pwt tfoot td.r{text-align:right;font-family:'JetBrains Mono',monospace}
+.party-name-cell{display:flex;align-items:center;gap:10px}
+.party-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.party-full{font-size:13px;color:var(--text)}
+.party-code{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-left:4px}
+.leading-num{color:var(--accent);font-weight:700}
+.pending-num{color:var(--dim)}
+
+/* ── SEAT GRID ── */
+.seat-grid-wrap{padding:14px}
+.seat-grid{display:flex;flex-wrap:wrap;gap:3px}
+.sq{width:13px;height:13px;border-radius:2px;cursor:pointer;transition:transform .1s,box-shadow .1s;flex-shrink:0}
+.sq:hover{transform:scale(2.2);z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.sq.pend{opacity:.2;background:var(--faint)!important}
+.seat-legend{display:flex;flex-wrap:wrap;gap:5px;padding:10px 14px;border-top:1px solid var(--border)}
+.sli{display:flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);padding:2px 6px;border-radius:3px;cursor:default;transition:background .1s}
+.sli:hover{background:var(--surface3)}
+.sld{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* ── DONUT ── */
+.donut-wrap{position:relative;height:200px}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.dc-num{font-size:24px;font-weight:700;color:var(--text)}
+.dc-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1.5px}
+
+/* ── BARS ── */
+.bars-list{padding:14px;display:flex;flex-direction:column;gap:8px}
+.bar-row{display:flex;align-items:center;gap:8px}
+.bar-name{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;width:46px;flex-shrink:0;text-align:right}
+.bar-track{flex:1;height:18px;background:var(--surface3);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
+.bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px;transition:width .55s cubic-bezier(.4,0,.2,1)}
+.bar-fill-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.85);white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.bar-count{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;width:26px;text-align:right;flex-shrink:0}
+
+/* ── CANDIDATE TABLE ── */
+.filters{display:flex;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);flex-wrap:wrap;background:var(--surface2)}
+.filters input,.filters select{background:var(--surface);border:1px solid var(--border2);color:var(--text);padding:5px 9px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;outline:none;transition:border-color .15s}
+.filters input{flex:1;min-width:140px}
+.filters input:focus,.filters select:focus{border-color:var(--accent)}
+.filters select option{background:#fff}
+.tscroll{max-height:460px;overflow-y:auto}
+.tscroll::-webkit-scrollbar{width:4px}
+.tscroll::-webkit-scrollbar-track{background:transparent}
+.tscroll::-webkit-scrollbar-thumb{background:var(--faint);border-radius:2px}
+table.ctbl{width:100%;border-collapse:collapse;font-size:13px}
+table.ctbl thead th{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border2);white-space:nowrap;position:sticky;top:0;background:var(--surface2);z-index:5}
+table.ctbl tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+table.ctbl tbody tr:nth-child(even){background:var(--row-alt)}
+table.ctbl tbody tr:hover{background:var(--accent-light)}
+table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
+.c-num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim)}
+.c-name{font-weight:500;font-size:13px;color:var(--text)}
+.c-name.pending{color:var(--dim)}
+.cpill{display:inline-block;padding:2px 7px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.3px}
+.tfoot-info{padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);border-top:1px solid var(--border);background:var(--surface2)}
+
+/* ── PROGRESS ── */
+.count-progress{padding:10px 14px 0}
+.cp-labels{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:4px}
+.cp-track{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;border:1px solid var(--border)}
+.cp-fill{height:100%;background:linear-gradient(90deg,var(--accent),#06b6d4);border-radius:2px;transition:width .7s}
+
+/* ── TOOLTIP ── */
+#tt{position:fixed;background:var(--surface);border:1px solid var(--border2);border-radius:7px;padding:10px 14px;pointer-events:none;display:none;z-index:9000;max-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.tt-num{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-bottom:4px;letter-spacing:1px}
+.tt-party{font-size:15px;font-weight:700;line-height:1.2}
+.tt-cand{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo">
+    <div class="eci-badge">ECI</div>
+    <h1>General Assembly Results <span>May 2026</span></h1>
+  </div>
+  <div class="hdr-right">
+    <div class="status-pill connecting" id="status-pill">
+      <div class="status-dot"></div>
+      <span class="status-text" id="status-text">CONNECTING</span>
+    </div>
+    <span class="ts" id="ts">—</span>
+    <button class="rbtn" onclick="fetchNow()">↺ Refresh</button>
+  </div>
+</header>
+
+<div class="main">
+  <div class="refresh-row">
+    <div></div>
+    <div class="hint" id="nxt-wrap">Next refresh in <span id="nxt-sec" style="color:var(--muted);margin-left:3px">30</span>s</div>
+  </div>
+
+  <div id="alert-bar"></div>
+
+  <!-- State tabs -->
+  <div class="state-tabs" id="state-tabs">
+    <div class="stab active" data-state="S22" onclick="switchState('S22')">Tamil Nadu<span class="stab-code">S22</span></div>
+    <div class="stab" data-state="S11" onclick="switchState('S11')">Kerala<span class="stab-code">S11</span></div>
+    <div class="stab" data-state="S03" onclick="switchState('S03')">Assam<span class="stab-code">S03</span></div>
+    <div class="stab" data-state="U07" onclick="switchState('U07')">Puducherry<span class="stab-code">U07</span></div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="summary-cards" id="summary-cards"></div>
+
+  <!-- Leader banner -->
+  <div id="leader-banner">
+    <div class="lb-inner">
+      <div class="lb-block">
+        <div class="lb-lbl">Leading</div>
+        <div class="lb-val" id="lb-party">—</div>
+      </div>
+      <div class="lb-sep"></div>
+      <div class="lb-block">
+        <div class="lb-lbl">Seats</div>
+        <div class="lb-val" id="lb-seats" style="color:var(--text)">—</div>
+      </div>
+      <div class="lb-sep"></div>
+      <div class="lb-block">
+        <div class="lb-lbl">2nd Place</div>
+        <div class="lb-val" id="lb-runner" style="color:var(--text);font-size:16px">—</div>
+      </div>
+      <div class="lb-maj">
+        <div class="lb-maj-labels">
+          <span id="lb-prog-lbl">Majority progress</span>
+          <span>Majority: <strong id="lb-maj-num" style="color:var(--text)">—</strong></span>
+        </div>
+        <div class="lb-track">
+          <div class="lb-fill" id="lb-fill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main layout: Party Wise Table + Seat grid -->
+  <div class="layout">
+    <!-- Party Wise Results table — main focus -->
+    <div class="panel">
+      <div class="ph">
+        <span class="ph-title">Party Wise Results</span>
+        <span class="ph-sub" id="state-total-label">—</span>
+      </div>
+      <table class="pwt" id="pwt">
+        <thead>
+          <tr>
+            <th>Party</th>
+            <th class="r">Leading</th>
+            <th class="r">Total</th>
+          </tr>
+        </thead>
+        <tbody id="pwt-body"></tbody>
+        <tfoot><tr id="pwt-foot"><td>Total</td><td class="r" id="pwt-total-lead">—</td><td class="r" id="pwt-total-all">—</td></tr></tfoot>
+      </table>
+    </div>
+
+    <!-- Right: seat grid + donut stacked -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <!-- Seat grid -->
+      <div class="panel">
+        <div class="ph">
+          <span class="ph-title">Constituency Map</span>
+          <span class="ph-sub" id="seat-sub">—</span>
+        </div>
+        <div class="count-progress" id="cp">
+          <div class="cp-labels">
+            <span id="cp-lbl">Results coming in</span>
+            <span id="cp-pct">—</span>
+          </div>
+          <div class="cp-track"><div class="cp-fill" id="cp-fill" style="width:0%"></div></div>
+        </div>
+        <div class="seat-grid-wrap"><div class="seat-grid" id="sgrid"></div></div>
+        <div class="seat-legend" id="sleg"></div>
+      </div>
+      <!-- Donut -->
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Seat Share</span></div>
+        <div style="padding:14px">
+          <div class="donut-wrap">
+            <canvas id="dc" role="img" aria-label="Donut chart showing seat share by party">Loading...</canvas>
+            <div class="donut-center">
+              <div class="dc-num" id="dc-num">—</div>
+              <div class="dc-lbl">RESULTS IN</div>
+            </div>
+          </div>
+          <div id="donut-leg" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom: bars + candidate table -->
+  <div class="layout-full">
+    <div class="panel">
+      <div class="ph"><span class="ph-title">Party Tally</span></div>
+      <div class="bars-list" id="bars-list"></div>
+    </div>
+    <div class="panel">
+      <div class="ph">
+        <span class="ph-title">Candidate Directory</span>
+        <span class="ph-sub" id="cand-lbl">—</span>
+      </div>
+      <div class="filters">
+        <input type="text" id="si" placeholder="Search name / party / #…">
+        <select id="pf"><option value="">All parties</option></select>
+        <select id="sf">
+          <option value="">All</option>
+          <option value="counted">Results in</option>
+          <option value="pending">Pending</option>
+        </select>
+      </div>
+      <div class="tscroll">
+        <table class="ctbl">
+          <thead><tr><th>#</th><th>Candidate</th><th>Party</th><th>Status</th></tr></thead>
+          <tbody id="ctbody"></tbody>
+        </table>
+      </div>
+      <div class="tfoot-info" id="tfoot-info">—</div>
+    </div>
+  </div>
+</div>
+
+<div id="tt">
+  <div class="tt-num" id="tt-num"></div>
+  <div class="tt-party" id="tt-party"></div>
+  <div class="tt-cand" id="tt-cand"></div>
+</div>
+
+<script>
+
+const PARTY_META = {
+  TVK:      {c:'#c026d3', full:'Tamilaga Vettri Kazhagam'},
+  DMK:      {c:'#059669', full:'Dravida Munnetra Kazhagam'},
+  ADMK:     {c:'#b45309', full:'All India Anna Dravida Munnetra Kazhagam'},
+  BJP:      {c:'#ea580c', full:'Bharatiya Janata Party'},
+  PMK:      {c:'#65a30d', full:'Pattali Makkal Katchi'},
+  INC:      {c:'#0284c7', full:'Indian National Congress'},
+  'CPI(M)': {c:'#b91c1c', full:'Communist Party of India (Marxist)'},
+  CPI:      {c:'#dc2626', full:'Communist Party of India'},
+  VCK:      {c:'#7c3aed', full:'Viduthalai Chiruthaigal Katchi'},
+  AMMKMNKZ: {c:'#9333ea', full:'Amma Makkal Munnettra Kazagam'},
+  DMDK:     {c:'#ca8a04', full:'Desiya Murpokku Dravida Kazhagam'},
+  BOPF:     {c:'#2563eb', full:'Bodoland Peoples Front'},
+  AGP:      {c:'#7c2d12', full:'Asom Gana Parishad'},
+  UPPL:     {c:'#db2777', full:'United People\'s Party Liberal'},
+  AIUDF:    {c:'#0369a1', full:'All India United Democratic Front'},
+  IUML:     {c:'#16a34a', full:'Indian Union Muslim League'},
+  RSP:      {c:'#6d28d9', full:'Revolutionary Socialist Party'},
+  KEC:      {c:'#be185d', full:'Kerala Congress'},
+  'KEC(J)': {c:'#9d174d', full:'Kerala Congress (Jacob)'},
+  'KEC(M)': {c:'#a21caf', full:'Kerala Congress (M)'},
+  CMPKSC:   {c:'#7e22ce', full:'Communist Marxist Party of Kerala (State Committee)'},
+  RJD:      {c:'#047857', full:'Rashtriya Janata Dal'},
+  RJRD:     {c:'#065f46', full:'RJRD'},
+  RMPOI:    {c:'#8b86d6', full:'RMPOI'},
+  IND:      {c:'#64748b', full:'Independent'},
+  AINRC:    {c:'#0f766e', full:'All India N.R. Congress'},
+  DMK_PY:   {c:'#059669', full:'Dravida Munnetra Kazhagam'},
+  NA:       {c:'#d1d5db', full:'Pending'},
+};
+const pc = p => (PARTY_META[p]||{c:'#94a3b8'}).c;
+const pf = p => (PARTY_META[p]||{full:p}).full;
+
+const STATES = {
+  S22:{name:'Tamil Nadu',  seats:234},
+  S11:{name:'Kerala',     seats:140},
+  S03:{name:'Assam',      seats:126},
+  U07:{name:'Puducherry', seats:30},
+};
+
+
+const ECI_BASE = 'https://results.eci.gov.in/ResultAcGenMay2026/election-json-';
+const INTERVAL  = 30;
+let donutChart  = null;
+let pollTimer   = null;
+let cntTimer    = null;
+let retries     = 0;
+let allData     = {};    // raw JSON per state key
+let activeState = 'S22';
+let allCands    = [];
+let prevJson    = null;
+
+const PROXIES = [
+  u => u,
+  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+  u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+];
+let proxyIdx = 0;
+
+async function tryFetch(url) {
+  let lastErr;
+  for (let i = 0; i < PROXIES.length; i++) {
+    const idx = (proxyIdx + i) % PROXIES.length;
+    const proxied = PROXIES[idx](url);
+    try {
+      const res = await fetch(proxied, {
+        cache: 'no-store',
+        headers: {'Accept':'application/json,*/*','Accept-Language':'en-IN,en;q=0.9'},
+        signal: AbortSignal.timeout(12000),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      if (!json || typeof json !== 'object') throw new Error('Invalid JSON');
+      proxyIdx = idx;
+      return json;
+    } catch(e) { lastErr = e; }
+  }
+  throw lastErr;
+}
+
+async function poll() {
+  setStatus('connecting');
+  try {
+    // Fetch all states in parallel — single JSON has all keys
+    const url = `${ECI_BASE}live.json`;
+    const json = await tryFetch(url);
+    retries = 0;
+    clearAlert();
+
+    // Cache all known state keys
+    Object.keys(STATES).forEach(k => { if (json[k]) allData[k] = json[k]; });
+
+    // Also try individual endpoints as fallback
+    if (!allData[activeState]) {
+      const stateUrl = `${ECI_BASE}${activeState}-live.json`;
+      const sd = await tryFetch(stateUrl);
+      if (sd[activeState]) allData[activeState] = sd[activeState];
+      else allData[activeState] = sd; // sometimes root is the state
+    }
+
+    renderState(activeState);
+    setStatus('live');
+    g('ts').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  } catch(err) {
+    // Try active state individual endpoint
+    try {
+      const stateUrl = `${ECI_BASE}${activeState}-live.json`;
+      const json2 = await tryFetch(stateUrl);
+      retries = 0;
+      clearAlert();
+      const sd = json2[activeState] || json2;
+      allData[activeState] = sd[activeState] ? sd : {[activeState]: sd};
+      if (!allData[activeState][activeState]) allData[activeState] = json2;
+      renderState(activeState);
+      setStatus('live');
+      g('ts').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      schedule(); return;
+    } catch(e2) {}
+
+    retries++;
+    setStatus('error');
+    showAlert((err.message||'Fetch failed') + (retries >= 2 ? ' — ECI may require an Indian IP.' : ' — retrying…'));
+  }
+  schedule();
+}
+
+function schedule() {
+  if (pollTimer) clearTimeout(pollTimer);
+  const delay = Math.min(INTERVAL * Math.max(retries, 1), 120) * 1000;
+  pollTimer = setTimeout(poll, delay);
+  startCountdown(Math.round(delay / 1000));
+}
+
+function startCountdown(secs) {
+  let c = secs;
+  const wrap = g('nxt-wrap');
+  wrap.innerHTML = `Next refresh in <span id="nxt-sec" style="color:var(--muted);margin-left:3px">${c}</span>s`;
+  if (cntTimer) clearInterval(cntTimer);
+  cntTimer = setInterval(() => {
+    c--;
+    const e = document.getElementById('nxt-sec');
+    if (!e || c <= 0) { clearInterval(cntTimer); if(e) e.parentNode.textContent = 'Fetching…'; return; }
+    e.textContent = c;
+  }, 1000);
+}
+
+function fetchNow() {
+  if (pollTimer) clearTimeout(pollTimer);
+  if (cntTimer) clearInterval(cntTimer);
+  retries = 0;
+  poll();
+}
+
+function switchState(code) {
+  activeState = code;
+  document.querySelectorAll('.stab').forEach(t => {
+    t.classList.toggle('active', t.dataset.state === code);
+  });
+  if (allData[code]) renderState(code);
+  else { clearUI(); poll(); }
+}
+
+
+function renderState(code) {
+  const sd = allData[code];
+  if (!sd) return;
+
+  const stateData = sd[code] || sd;
+  const chartData = stateData.chartData || [];
+  const tableData = stateData.tableData || [];
+
+  // Build cmap
+  const cmap = {};
+  chartData.forEach(([party, , num, name]) => { cmap[num] = {party, name}; });
+
+  // Count by party from tableData
+  const counts = {};
+  tableData.forEach(([p]) => { counts[p] = (counts[p]||0) + 1; });
+
+  const total    = tableData.length;
+  const pending  = counts['NA'] || 0;
+  const inCount  = total - pending;
+  const majority = Math.floor((STATES[code]?.seats || total) / 2) + 1;
+  const named    = Object.entries(counts)
+    .filter(([p]) => p !== 'NA')
+    .sort((a, b) => b[1] - a[1]);
+
+  // Update tab label
+  g('state-total-label').textContent = `Total AC: ${STATES[code]?.seats || total}`;
+
+  renderSummaryCards(counts, total, inCount, pending, code);
+  renderLeaderBanner(named, majority);
+  renderPartyWiseTable(named, inCount, total);
+  renderSeatGrid(tableData, cmap, inCount, total);
+  renderBars(named);
+  renderDonut(named, inCount);
+  renderCandidateTable(tableData, cmap);
+}
+
+function renderSummaryCards(counts, total, inCount, pending, code) {
+  const seats = STATES[code]?.seats || total;
+  const named = Object.entries(counts).filter(([p])=>p!=='NA').sort((a,b)=>b[1]-a[1]);
+  const top3  = named.slice(0, 3);
+  let html = `
+    <div class="sc" style="--accent-color:var(--accent)">
+      <div class="sc-lbl">Total Seats</div>
+      <div class="sc-val" style="color:var(--text);font-size:22px">${seats}</div>
+      <div class="sc-sub">constituencies</div>
+    </div>
+    <div class="sc" style="--accent-color:#22c55e">
+      <div class="sc-lbl">Results In</div>
+      <div class="sc-val" style="color:#16a34a">${inCount}</div>
+      <div class="sc-sub">${Math.round(inCount/total*100)}% of total</div>
+    </div>
+    <div class="sc" style="--accent-color:var(--dim)">
+      <div class="sc-lbl">Pending</div>
+      <div class="sc-val" style="color:var(--dim)">${pending}</div>
+      <div class="sc-sub">awaiting result</div>
+    </div>`;
+  top3.forEach(([p, c]) => {
+    const col = pc(p);
+    html += `<div class="sc" style="--accent-color:${col}">
+      <div class="sc-lbl">${p}</div>
+      <div class="sc-val" style="color:${col}">${c}</div>
+      <div class="sc-sub">${pf(p).split(' ').slice(0,2).join(' ')}</div>
+    </div>`;
+  });
+  g('summary-cards').innerHTML = html;
+}
+
+function renderLeaderBanner(named, majority) {
+  const banner = g('leader-banner');
+  if (!named.length) { banner.style.display='none'; return; }
+  banner.style.display = 'block';
+  const [p1, c1] = named[0];
+  const [p2, c2] = named[1] || ['—', 0];
+  const col = pc(p1);
+  banner.style.borderColor = col + '40';
+  banner.style.background  = col + '08';
+  const pv = g('lb-party'); pv.textContent = p1; pv.style.color = col;
+  g('lb-seats').textContent = c1 + ' seats';
+  g('lb-runner').textContent = p2 + ': ' + c2;
+  g('lb-maj-num').textContent = majority;
+  g('lb-prog-lbl').textContent = p1 + ' to majority';
+  const pct = Math.min((c1 / majority) * 100, 100);
+  const fill = g('lb-fill');
+  fill.style.width = pct + '%';
+  fill.style.background = col;
+}
+
+function renderPartyWiseTable(named, inCount, total) {
+  const tbody = g('pwt-body');
+  tbody.innerHTML = named.map(([p, c]) => {
+    const col = pc(p);
+    const fullName = pf(p);
+    return `<tr>
+      <td>
+        <div class="party-name-cell">
+          <span class="party-dot" style="background:${col}"></span>
+          <span class="party-full">${fullName}</span>
+          <span class="party-code">— ${p}</span>
+        </div>
+      </td>
+      <td class="r leading-num" style="color:${col}">${c}</td>
+      <td class="r" style="color:var(--text)">${c}</td>
+    </tr>`;
+  }).join('');
+  g('pwt-total-lead').textContent = inCount;
+  g('pwt-total-all').textContent  = total;
+}
+
+function renderSeatGrid(tableData, cmap, inCount, total) {
+  const sg  = g('sgrid');
+  const tt  = g('tt');
+  sg.innerHTML = '';
+
+  tableData.forEach(([party,,num]) => {
+    const s   = document.createElement('div');
+    const col = pc(party);
+    s.className = 'sq' + (party === 'NA' ? ' pend' : '');
+    s.style.background = col;
+
+    s.addEventListener('mousemove', e => {
+      const ci = cmap[num] || {};
+      tt.style.display = 'block';
+      tt.style.left = (e.clientX + 14) + 'px';
+      tt.style.top  = (e.clientY - 55) + 'px';
+      g('tt-num').textContent    = `Constituency #${num}`;
+      g('tt-party').textContent  = party === 'NA' ? 'Pending' : party;
+      g('tt-party').style.color  = col;
+      g('tt-cand').textContent   = (ci.name && ci.name !== 'NA') ? ci.name : '—';
+    });
+    s.addEventListener('mouseleave', () => { tt.style.display = 'none'; });
+    sg.appendChild(s);
+  });
+
+  const pct = Math.round(inCount / total * 100);
+  g('seat-sub').textContent = `${inCount} in · ${total - inCount} pending`;
+  g('cp-fill').style.width  = pct + '%';
+  g('cp-pct').textContent   = pct + '%';
+  g('cp-lbl').textContent   = inCount < total ? 'Results coming in' : 'All results in';
+
+  // Build legend from unique parties present
+  const seenParties = [...new Set(tableData.filter(([p])=>p!=='NA').map(([p])=>p))];
+  const counts2 = {};
+  tableData.forEach(([p])=>{ counts2[p]=(counts2[p]||0)+1; });
+  seenParties.sort((a,b) => (counts2[b]||0) - (counts2[a]||0));
+
+  g('sleg').innerHTML = seenParties.slice(0, 12).map(p =>
+    `<span class="sli"><span class="sld" style="background:${pc(p)}"></span>${p} (${counts2[p]||0})</span>`
+  ).join('') + (total - inCount > 0
+    ? `<span class="sli"><span class="sld" style="background:var(--faint);opacity:.5"></span>Pending (${total-inCount})</span>`
+    : '');
+}
+
+function renderBars(named) {
+  const el = g('bars-list');
+  el.innerHTML = '';
+  if (!named.length) return;
+  const mx = named[0][1];
+  named.slice(0, 14).forEach(([p, c]) => {
+    const col = pc(p);
+    const pct = mx > 0 ? Math.max(Math.round((c / mx) * 100), c > 0 ? 4 : 0) : 0;
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `
+      <div class="bar-name" style="color:${col}">${p}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${pct}%;background:${col}">
+          ${c > 3 ? `<span class="bar-fill-lbl">${c}</span>` : ''}
+        </div>
+      </div>
+      <div class="bar-count" style="color:${col}">${c}</div>`;
+    el.appendChild(row);
+  });
+}
+
+function renderDonut(named, inCount) {
+  const top  = named.slice(0, 8);
+  const rest = named.slice(8).reduce((s,[,v]) => s+v, 0);
+  const lbls = top.map(([p]) => p);
+  const data = top.map(([,v]) => v);
+  const cols = top.map(([p]) => pc(p));
+  if (rest > 0) { lbls.push('Others'); data.push(rest); cols.push('#94a3b8'); }
+
+  g('dc-num').textContent = inCount;
+
+  const ctx = g('dc').getContext('2d');
+  if (donutChart) {
+    donutChart.data.labels = lbls;
+    donutChart.data.datasets[0].data = data;
+    donutChart.data.datasets[0].backgroundColor = cols;
+    donutChart.update('active');
+  } else {
+    donutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {labels: lbls, datasets: [{data, backgroundColor: cols, borderWidth: 2, borderColor: '#ffffff', hoverBorderColor: '#1e293b', hoverBorderWidth: 2}]},
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '68%',
+        animation: {animateRotate: true, duration: 800},
+        plugins: {
+          legend: {display: false},
+          tooltip: {
+            backgroundColor: '#ffffff', borderColor: '#e2e5ef', borderWidth: 1,
+            titleColor: '#12192e', bodyColor: '#6b7494', padding: 10, cornerRadius: 6,
+            titleFont: {family: 'JetBrains Mono'}, bodyFont: {family: 'JetBrains Mono', size: 11},
+            callbacks: {label: c => ` ${c.label}: ${c.raw} seats`}
+          }
+        }
+      }
+    });
+  }
+
+  g('donut-leg').innerHTML = top.map(([p, c]) =>
+    `<span style="display:flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)">
+      <span style="width:8px;height:8px;border-radius:2px;background:${pc(p)};flex-shrink:0"></span>${p} ${c}
+    </span>`
+  ).join('');
+}
+
+function renderCandidateTable(tableData, cmap) {
+  allCands = tableData.map(([party,,num]) => {
+    const ci = cmap[num] || {};
+    return {num, party, name: (ci.name && ci.name !== 'NA') ? ci.name : null, status: party === 'NA' ? 'pending' : 'counted'};
+  });
+
+  // Populate party filter
+  const psel = g('pf');
+  const existing = new Set([...psel.options].map(o => o.value));
+  [...new Set(tableData.map(([p]) => p).filter(p => p !== 'NA'))].sort().forEach(p => {
+    if (!existing.has(p)) {
+      const o = document.createElement('option');
+      o.value = p; o.textContent = `${pf(p)} (${p})`;
+      psel.appendChild(o);
+    }
+  });
+  renderCandTable();
+}
+
+function renderCandTable() {
+  const s   = g('si').value.toLowerCase().trim();
+  const pfv = g('pf').value;
+  const sfv = g('sf').value;
+
+  const f = allCands.filter(c => {
+    const ms  = !s || (c.name&&c.name.toLowerCase().includes(s)) || String(c.num).includes(s) || c.party.toLowerCase().includes(s);
+    const mp  = !pfv || c.party === pfv;
+    const mst = !sfv || c.status === sfv;
+    return ms && mp && mst;
+  });
+
+  const rows = f.slice(0, 150).map(c => {
+    const col  = pc(c.party);
+    const isPend = c.status === 'pending';
+    return `<tr>
+      <td class="c-num">${c.num}</td>
+      <td><span class="c-name${isPend?' pending':''}">${c.name || '<span style="color:var(--dim)">—</span>'}</span></td>
+      <td>${isPend
+        ? `<span class="cpill" style="background:#f1f5f9;color:var(--dim)">PENDING</span>`
+        : `<span class="cpill" style="background:${col}18;color:${col}">${c.party}</span>`
+      }</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${isPend?'var(--dim)':'#16a34a'}">${isPend ? 'Pending' : '● In'}</td>
+    </tr>`;
+  }).join('');
+
+  g('ctbody').innerHTML = rows;
+  g('cand-lbl').textContent = f.length + ' results';
+  g('tfoot-info').textContent = f.length > 150
+    ? `Showing 150 of ${f.length} — refine search`
+    : `${f.length} candidate${f.length !== 1 ? 's' : ''}`;
+}
+
+function clearUI() {
+  g('pwt-body').innerHTML = '';
+  g('sgrid').innerHTML = '';
+  g('bars-list').innerHTML = '';
+  g('ctbody').innerHTML = '';
+}
+function setStatus(s) {
+  const pill = g('status-pill');
+  const txt  = g('status-text');
+  pill.className = 'status-pill ' + s;
+  txt.textContent = s === 'live' ? 'LIVE' : s === 'error' ? 'ERROR' : 'CONNECTING';
+}
+function showAlert(msg) { const a=g('alert-bar'); a.textContent='⚠ '+msg; a.classList.add('show'); }
+function clearAlert() { g('alert-bar').classList.remove('show'); }
+function g(id) { return document.getElementById(id); }
+
+g('si').addEventListener('input', renderCandTable);
+g('pf').addEventListener('change', renderCandTable);
+g('sf').addEventListener('change', renderCandTable);
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    if (pollTimer) clearTimeout(pollTimer);
+    if (cntTimer)  clearInterval(cntTimer);
+    retries = 0; poll();
+  }
+});
+
+poll();
+</script>
+</body>
+</html>
