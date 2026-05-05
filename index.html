@@ -210,7 +210,7 @@ table.ctbl tbody td{padding:7px 12px;vertical-align:middle}
           <thead>
             <tr>
               <th>Party</th>
-              <th class="num">Seats (Leading)</th>
+              <th class="num">Seats (Won)</th>
             </tr>
           </thead>
           <tbody id="pwt-body"></tbody>
@@ -674,21 +674,21 @@ function renderCandRows(){
   g('ctbody').innerHTML=f.slice(0,200).map(c=>{
     const col=pc(c.party),isPend=c.status==='pend';
     return `<tr>
-      <td class="c-num">${c.num}</td>
-      <td>
-        <div style="font-size:12px;font-weight:600;color:var(--text)">${c.constName}</div>
-        <div class="c-const">${c.name||`<span style="color:var(--dim)">—</span>`}</div>
-      </td>
-      <td>${isPend
-        ?`<span class="cpill" style="background:#f1f5f9;color:var(--dim)">PENDING</span>`
-        :`<span class="cpill" style="background:${col}18;color:${col}">${c.party}</span>`
-      }</td>
-      <td style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${isPend?'var(--dim)':'#2563eb'}">${isPend?'Pending':'● Leading'}</td>
-    </tr>`;
-  }).join('');
-  g('cand-lbl').textContent=f.length+' results';
-  g('tfoot-info').textContent=f.length>200?`Showing 200 of ${f.length} — refine search`:`${f.length} constituency results`;
-}
+  <td class="c-num">${c.num}</td>
+  <td class="c-name">${c.constName}</td>
+  <td>
+    ${c.name ? c.name : `<span style="color:var(--dim)">—</span>`}
+  </td>
+  <td>
+    ${isPend
+      ? `<span class="cpill" style="background:#f1f5f9;color:var(--dim)">PENDING</span>`
+      : `<span class="cpill" style="background:${col}18;color:${col}">${c.party}</span>`
+    }
+  </td>
+  <td style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${isPend?'var(--dim)':'#2563eb'}">
+    ${isPend ? 'Pending' : '● Won'}
+  </td>
+</tr>`;
 
 function setStatus(s){
   const pill=g('spill'),txt=g('stext');
