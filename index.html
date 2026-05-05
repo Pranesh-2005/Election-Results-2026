@@ -658,37 +658,42 @@ function renderCandTable_data(tableData,cmap,code){
 }
 
 function renderCandRows(){
-  const s=g('si').value.toLowerCase().trim();
-  const pfv=g('pf').value,sfv=g('sf').value;
-  const f=allCands.filter(c=>{
-    const ms=!s
-      ||(c.name&&c.name.toLowerCase().includes(s))
-      ||c.constName.toLowerCase().includes(s)
-      ||String(c.num).includes(s)
-      ||c.party.toLowerCase().includes(s)
-      ||(pfl(c.party)||'').toLowerCase().includes(s);
-    const mp=!pfv||c.party===pfv;
-    const mst=!sfv||c.status===sfv;
-    return ms&&mp&&mst;
+  const s = g('si').value.toLowerCase().trim();
+  const pfv = g('pf').value, sfv = g('sf').value;
+
+  const f = allCands.filter(c=>{
+    const ms = !s
+      || (c.name && c.name.toLowerCase().includes(s))
+      || c.constName.toLowerCase().includes(s)
+      || String(c.num).includes(s)
+      || c.party.toLowerCase().includes(s)
+      || (pfl(c.party)||'').toLowerCase().includes(s);
+
+    const mp = !pfv || c.party === pfv;
+    const mst = !sfv || c.status === sfv;
+
+    return ms && mp && mst;
   });
-  g('ctbody').innerHTML=f.slice(0,200).map(c=>{
-    const col=pc(c.party),isPend=c.status==='pend';
+
+  g('ctbody').innerHTML = f.slice(0,200).map(c=>{
+    const col = pc(c.party), isPend = c.status === 'pend';
+
     return `<tr>
-  <td class="c-num">${c.num}</td>
-  <td class="c-name">${c.constName}</td>
-  <td>
-    ${c.name ? c.name : `<span style="color:var(--dim)">—</span>`}
-  </td>
-  <td>
-    ${isPend
-      ? `<span class="cpill" style="background:#f1f5f9;color:var(--dim)">PENDING</span>`
-      : `<span class="cpill" style="background:${col}18;color:${col}">${c.party}</span>`
-    }
-  </td>
-  <td style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${isPend?'var(--dim)':'#2563eb'}">
-    ${isPend ? 'Pending' : '● Won'}
-  </td>
-</tr>`;
+      <td class="c-num">${c.num}</td>
+      <td class="c-name">${c.constName}</td>
+      <td>${c.name ? c.name : `<span style="color:var(--dim)">—</span>`}</td>
+      <td>
+        ${isPend
+          ? `<span class="cpill" style="background:#f1f5f9;color:var(--dim)">PENDING</span>`
+          : `<span class="cpill" style="background:${col}18;color:${col}">${c.party}</span>`
+        }
+      </td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${isPend?'var(--dim)':'#2563eb'}">
+        ${isPend ? 'Pending' : '● Won'}
+      </td>
+    </tr>`;
+  }).join('');
+}
 
 function setStatus(s){
   const pill=g('spill'),txt=g('stext');
